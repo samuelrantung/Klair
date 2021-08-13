@@ -13,12 +13,18 @@ import {
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
 import {Gap} from '../../components';
-import {Colors} from 'react-native/Libraries/NewAppScreen';
+import Swiper from 'react-native-swiper';
 
-const Onboarding = () => {
+const Page = ({
+  title,
+  content,
+  background,
+  buttonText = 'Berikutnya',
+  onNext,
+}) => {
   return (
     <ImageBackground
-      source={OnBoarding1bg}
+      source={background}
       style={styles.bg}
       imageStyle={styles.bgStyles}>
       <Gap height={hp('8%')} />
@@ -27,21 +33,12 @@ const Onboarding = () => {
       </View>
       <View style={styles.bottomCont}>
         <View style={styles.textCont}>
-          <Text style={styles.textTitle}>Lorem ipsum dolor sit amet</Text>
-          <Text style={styles.textContent}>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla nisl
-            id viverra neque. Id consequat interdum ullamcorper quis id aenean
-            accumsan.
-          </Text>
+          <Text style={styles.textTitle}>{title}</Text>
+          <Text style={styles.textContent}>{content}</Text>
         </View>
         <View style={styles.buttonCont}>
-          <View style={styles.navigationDotsCont}>
-            <View style={styles.dots}></View>
-            <View style={styles.dots}></View>
-            <View style={styles.dots}></View>
-          </View>
-          <TouchableOpacity style={styles.buttonLewatiCont}>
-            <Text style={styles.buttonLewatiText}>Lewati</Text>
+          <TouchableOpacity style={styles.buttonLewatiCont} onPress={onNext}>
+            <Text style={styles.buttonNextText}>{buttonText}</Text>
           </TouchableOpacity>
         </View>
         <View style={styles.signTextCont}>
@@ -54,7 +51,79 @@ const Onboarding = () => {
   );
 };
 
+const Onboarding = ({navigation}) => {
+  const swiper = React.useRef(null);
+  const handleNext = () => {
+    if (swiper && swiper.current) {
+      swiper.current.scrollBy(1);
+    }
+  };
+  return (
+    <Swiper
+      ref={swiper}
+      loop={false}
+      paginationStyle={styles.paginationStyle}
+      dotStyle={styles.dotStyle}
+      activeDotStyle={styles.activeDotStyle}>
+      <View>
+        <Page
+          title="Lorem ipsum dolor sit amet"
+          content="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla
+              nisl id viverra neque. Id consequat interdum ullamcorper quis id
+              aenean accumsan."
+          background={OnBoarding1bg}
+          onNext={() => handleNext()}
+        />
+      </View>
+      <View>
+        <Page
+          title="Lorem ipsum dolor sit amet"
+          content="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla
+              nisl id viverra neque. Id consequat interdum ullamcorper quis id
+              aenean accumsan."
+          background={OnBoarding1bg}
+          onNext={() => handleNext()}
+        />
+      </View>
+      <View>
+        <Page
+          title="Lorem ipsum dolor sit amet"
+          content="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla
+              nisl id viverra neque. Id consequat interdum ullamcorper quis id
+              aenean accumsan."
+          background={OnBoarding1bg}
+          buttonText="Selesai"
+          onNext={() => navigation.navigate('Signin')}
+        />
+      </View>
+    </Swiper>
+  );
+};
+
 const styles = StyleSheet.create({
+  //swiper
+  paginationStyle: {
+    height: hp('5%'),
+    width: wp('100%'),
+    bottom: hp('11%'),
+    paddingHorizontal: wp('10%'),
+    justifyContent: 'flex-start',
+  },
+  dotStyle: {
+    backgroundColor: colors.light,
+    height: wp('4%'),
+    width: wp('4%'),
+    borderRadius: 20,
+    marginRight: 25,
+  },
+  activeDotStyle: {
+    backgroundColor: colors.secondaryGold,
+    height: wp('4%'),
+    width: wp('8%'),
+    borderRadius: 20,
+    marginRight: 25,
+  },
+  //swiper
   bg: {
     width: '100%',
     height: '100%',
@@ -92,7 +161,8 @@ const styles = StyleSheet.create({
     bottom: hp('7%'),
     paddingHorizontal: wp('10%'),
     flexDirection: 'row',
-    justifyContent: 'space-between',
+    justifyContent: 'flex-end',
+    // backgroundColor: 'yellow',
   },
   navigationDotsCont: {
     height: '100%',
@@ -101,14 +171,14 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     flexDirection: 'row',
   },
-  dots: {
-    height: '40%',
-    aspectRatio: 1,
-    // width: 15,
-    // height: 15,
-    backgroundColor: colors.light,
-    borderRadius: 20,
-  },
+  // dots: {
+  //   height: '40%',
+  //   aspectRatio: 1,
+  //   // width: 15,
+  //   // height: 15,
+  //   backgroundColor: colors.light,
+  //   borderRadius: 20,
+  // },
   buttonLewatiCont: {
     backgroundColor: colors.secondaryGold,
     height: '100%',
@@ -116,11 +186,11 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     borderRadius: 20,
-    elevation: 10,
+    elevation: 13,
   },
-  buttonLewatiText: {
+  buttonNextText: {
     color: colors.light,
-    fontSize: wp('4.4%'),
+    fontSize: wp('4%'),
   },
   signTextCont: {
     position: 'absolute',
