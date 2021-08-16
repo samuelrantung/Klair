@@ -17,11 +17,6 @@ import {useNavigation} from '@react-navigation/native';
 
 const Signin = () => {
   const navigation = useNavigation();
-
-  const OnSignin = () => {
-    console.log('Sign in Pressed!');
-    navigation.navigate('Dashboard');
-  };
   return (
     <ImageBackground
       source={SigninSignupBG}
@@ -37,12 +32,16 @@ const Signin = () => {
       </View>
       <View style={styles.container}>
         <View style={styles.insideContainer}>
-          <Gap height={hp('5%')} />
+          <Gap height={hp('3%')} />
           <View style={styles.titleContainer}>
             <Text style={styles.bigTitle}>Hello There!</Text>
-            <Text style={styles.smallTitle}>Let's sign you in.</Text>
+            <Text style={styles.smallTitle}>Let's get started.</Text>
           </View>
-          <Gap height={hp('8%')} />
+          <Gap height={hp('4%')} />
+          <View style={styles.textInputContainer}>
+            <TextInput style={styles.textInput} placeholder="Nama" />
+          </View>
+          <Gap height={hp('4')} />
           <View style={styles.textInputContainer}>
             <TextInput style={styles.textInput} placeholder="Alamat Email" />
           </View>
@@ -56,8 +55,8 @@ const Signin = () => {
           </View>
 
           <Gap height={hp('4%')} />
-          <TouchableOpacity style={styles.buttonContainer} onPress={OnSignin}>
-            <Text style={styles.buttonLabel}>Sign In</Text>
+          <TouchableOpacity style={styles.buttonContainer}>
+            <Text style={styles.buttonLabel}>Sign Up</Text>
           </TouchableOpacity>
           <Gap height={hp('2%')} />
           <View style={styles.bottomTextContainer}>
@@ -65,8 +64,8 @@ const Signin = () => {
             <Gap width={5} />
             <TouchableOpacity
               style={styles.bottomTextButton}
-              onPress={() => navigation.navigate('Signup')}>
-              <Text style={styles.bottomTextButtonText}>Daftar</Text>
+              onPress={() => navigation.navigate('Signin')}>
+              <Text style={styles.bottomTextButtonText}>Masuk</Text>
             </TouchableOpacity>
           </View>
         </View>

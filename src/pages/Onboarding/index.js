@@ -7,13 +7,23 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import {colors, OnBoarding1bg, OnBoarding1ilstr} from '../../assets';
+import {
+  colors,
+  fonts,
+  OnBoarding1bg,
+  OnBoarding1ilstr,
+  OnBoarding2bg,
+  OnBoarding2ilstr,
+  OnBoarding3bg,
+  OnBoarding3ilstr,
+} from '../../assets';
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
 import {Gap} from '../../components';
 import Swiper from 'react-native-swiper';
+import {useNavigation} from '@react-navigation/native';
 
 const Page = ({
   title,
@@ -21,7 +31,19 @@ const Page = ({
   background,
   buttonText = 'Berikutnya',
   onNext,
+  illustration,
 }) => {
+  const navigation = useNavigation();
+
+  const RenderIllustration = () => {
+    if (illustration === 'page1') {
+      return <OnBoarding1ilstr width={wp('75%')} />;
+    } else if (illustration === 'page2') {
+      return <OnBoarding2ilstr width={wp('75%')} />;
+    } else if (illustration === 'page3') {
+      return <OnBoarding3ilstr width={wp('75%')} />;
+    }
+  };
   return (
     <ImageBackground
       source={background}
@@ -29,7 +51,7 @@ const Page = ({
       imageStyle={styles.bgStyles}>
       <Gap height={hp('8%')} />
       <View style={styles.ilstrCont}>
-        <OnBoarding1ilstr width={wp('75%')} />
+        <RenderIllustration />
       </View>
       <View style={styles.bottomCont}>
         <View style={styles.textCont}>
@@ -37,14 +59,25 @@ const Page = ({
           <Text style={styles.textContent}>{content}</Text>
         </View>
         <View style={styles.buttonCont}>
+          {/* <View style={styles.navigationDotsCont}>
+            <View style={styles.dots} />
+          </View> */}
           <TouchableOpacity style={styles.buttonLewatiCont} onPress={onNext}>
             <Text style={styles.buttonNextText}>{buttonText}</Text>
           </TouchableOpacity>
         </View>
         <View style={styles.signTextCont}>
-          <Text style={styles.signText}>
-            Sudah punya akun? Masuk atau Daftar
-          </Text>
+          <Text style={styles.signText}>Sudah punya akun?</Text>
+          <Gap width={8} />
+          <TouchableOpacity onPress={() => navigation.navigate('Signin')}>
+            <Text style={styles.signTextButton}>Masuk</Text>
+          </TouchableOpacity>
+          <Gap width={8} />
+          <Text style={styles.signText}>atau</Text>
+          <Gap width={8} />
+          <TouchableOpacity onPress={() => navigation.navigate('Signup')}>
+            <Text style={styles.signTextButton}>Daftar</Text>
+          </TouchableOpacity>
         </View>
       </View>
     </ImageBackground>
@@ -72,6 +105,7 @@ const Onboarding = ({navigation}) => {
               nisl id viverra neque. Id consequat interdum ullamcorper quis id
               aenean accumsan."
           background={OnBoarding1bg}
+          illustration="page1"
           onNext={() => handleNext()}
         />
       </View>
@@ -81,7 +115,8 @@ const Onboarding = ({navigation}) => {
           content="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla
               nisl id viverra neque. Id consequat interdum ullamcorper quis id
               aenean accumsan."
-          background={OnBoarding1bg}
+          background={OnBoarding2bg}
+          illustration="page2"
           onNext={() => handleNext()}
         />
       </View>
@@ -91,7 +126,8 @@ const Onboarding = ({navigation}) => {
           content="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla
               nisl id viverra neque. Id consequat interdum ullamcorper quis id
               aenean accumsan."
-          background={OnBoarding1bg}
+          background={OnBoarding3bg}
+          illustration="page3"
           buttonText="Selesai"
           onNext={() => navigation.navigate('Signin')}
         />
@@ -164,13 +200,14 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-end',
     // backgroundColor: 'yellow',
   },
-  navigationDotsCont: {
-    height: '100%',
-    width: wp('30%'),
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    flexDirection: 'row',
-  },
+  // navigationDotsCont: {
+  //   height: '100%',
+  //   width: wp('30%'),
+  //   // justifyContent: 'space-between',
+  //   alignItems: 'center',
+  //   flexDirection: 'row',
+  //   backgroundColor: 'red',
+  // },
   // dots: {
   //   height: '40%',
   //   aspectRatio: 1,
@@ -196,11 +233,19 @@ const styles = StyleSheet.create({
     position: 'absolute',
     bottom: 0,
     width: wp('100%'),
+    flexDirection: 'row',
+    justifyContent: 'center',
   },
   signText: {
     color: colors.light,
     fontSize: wp('4.5%'),
     textAlign: 'center',
+  },
+  signTextButton: {
+    color: colors.light,
+    fontSize: wp('4.5%'),
+    textAlign: 'center',
+    fontFamily: fonts.robotoMedium,
   },
 });
 
