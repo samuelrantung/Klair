@@ -6,6 +6,7 @@ import {
   ImageBackground,
   TouchableOpacity,
   TextInput,
+  Alert,
 } from 'react-native';
 import {ArrowBack, colors, fonts, SigninSignupBG} from '../../assets';
 import {
@@ -19,6 +20,7 @@ import auth from '@react-native-firebase/auth';
 import {useState} from 'react';
 import {useForm} from '../../functions/useForm';
 import {GoogleSignin} from '@react-native-google-signin/google-signin';
+import {LoginManager, AccessToken} from 'react-native-fbsdk-next';
 
 GoogleSignin.configure({
   webClientId:
@@ -106,6 +108,43 @@ const Signin = () => {
       .catch(err => console.log('Error : ', err));
   };
 
+  async function onFacebookButtonPress() {
+    // Attempt login with permissions
+    const result = await LoginManager.logInWithPermissions([
+      'public_profile',
+      'email',
+    ]);
+
+    if (result.isCancelled) {
+      throw 'User cancelled the login process';
+    }
+
+    // Once signed in, get the users AccesToken
+    const data = await AccessToken.getCurrentAccessToken();
+
+    if (!data) {
+      throw 'Something went wrong obtaining access token';
+    }
+
+    // Create a Firebase credential with the AccessToken
+    const facebookCredential = auth.FacebookAuthProvider.credential(
+      data.accessToken,
+    );
+
+    // Sign-in the user with the credential
+    return auth().signInWithCredential(facebookCredential);
+  }
+
+  const facebookSignin = () => {
+    onFacebookButtonPress()
+      .then(success => {
+        console.log('Success login with facebook : ', success);
+      })
+      .catch(err => {
+        console.log('Error login with facebook : ', err);
+      });
+  };
+
   return (
     <ImageBackground
       source={SigninSignupBG}
@@ -167,6 +206,11 @@ const Signin = () => {
           <View>
             <TouchableOpacity onPress={googleSignin}>
               <Text>Google</Text>
+            </TouchableOpacity>
+          </View>
+          <View>
+            <TouchableOpacity onPress={facebookSignin}>
+              <Text>Facebook</Text>
             </TouchableOpacity>
           </View>
         </View>
