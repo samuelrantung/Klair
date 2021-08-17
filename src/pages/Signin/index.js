@@ -14,6 +14,9 @@ import {
 } from 'react-native-responsive-screen';
 import {Gap} from '../../components';
 import {useNavigation} from '@react-navigation/native';
+import {useEffect} from 'react';
+import auth from '@react-native-firebase/auth';
+import {useState} from 'react';
 
 const Signin = () => {
   const navigation = useNavigation();
@@ -22,56 +25,90 @@ const Signin = () => {
     console.log('Sign in Pressed!');
     navigation.navigate('Dashboard');
   };
-  return (
-    <ImageBackground
-      source={SigninSignupBG}
-      style={styles.bg}
-      imageStyle={styles.bgStyle}>
-      <Gap height={hp('8%')} />
-      <View style={styles.backButtonContainer}>
-        <TouchableOpacity
-          style={styles.backButton}
-          onPress={() => navigation.goBack()}>
-          <ArrowBack style={styles.arrowBackButton} />
-        </TouchableOpacity>
-      </View>
-      <View style={styles.container}>
-        <View style={styles.insideContainer}>
-          <Gap height={hp('5%')} />
-          <View style={styles.titleContainer}>
-            <Text style={styles.bigTitle}>Hello There!</Text>
-            <Text style={styles.smallTitle}>Let's sign you in.</Text>
-          </View>
-          <Gap height={hp('8%')} />
-          <View style={styles.textInputContainer}>
-            <TextInput style={styles.textInput} placeholder="Alamat Email" />
-          </View>
-          <Gap height={hp('4%')} />
-          <View style={styles.textInputContainer}>
-            <TextInput
-              style={styles.textInput}
-              secureTextEntry={true}
-              placeholder="Password"
-            />
-          </View>
 
-          <Gap height={hp('4%')} />
-          <TouchableOpacity style={styles.buttonContainer} onPress={OnSignin}>
-            <Text style={styles.buttonLabel}>Sign In</Text>
+  // Set an initializing state whilst Firebase connects
+  const [initializing, setInitializing] = useState(true);
+  const [user, setUser] = useState();
+
+  // Handle user state changes
+  function onAuthStateChanged(user) {
+    setUser(user);
+    if (initializing) {
+      setInitializing(false);
+    }
+  }
+
+  useEffect(() => {
+    const subscriber = auth().onAuthStateChanged(onAuthStateChanged);
+    return subscriber; // unsubscribe on unmount
+  }, []);
+
+  if (initializing) {
+    return null;
+  }
+
+  if (!user) {
+    // return (
+    //   <View>
+    //     <Text>Login</Text>
+    //   </View>
+    // );
+    return (
+      <ImageBackground
+        source={SigninSignupBG}
+        style={styles.bg}
+        imageStyle={styles.bgStyle}>
+        <Gap height={hp('8%')} />
+        <View style={styles.backButtonContainer}>
+          <TouchableOpacity
+            style={styles.backButton}
+            onPress={() => navigation.goBack()}>
+            <ArrowBack style={styles.arrowBackButton} />
           </TouchableOpacity>
-          <Gap height={hp('2%')} />
-          <View style={styles.bottomTextContainer}>
-            <Text style={styles.bottomText}>Belum punya akun?</Text>
-            <Gap width={5} />
-            <TouchableOpacity
-              style={styles.bottomTextButton}
-              onPress={() => navigation.navigate('Signup')}>
-              <Text style={styles.bottomTextButtonText}>Daftar</Text>
+        </View>
+        <View style={styles.container}>
+          <View style={styles.insideContainer}>
+            <Gap height={hp('5%')} />
+            <View style={styles.titleContainer}>
+              <Text style={styles.bigTitle}>Hello There!</Text>
+              <Text style={styles.smallTitle}>Let's sign you in.</Text>
+            </View>
+            <Gap height={hp('8%')} />
+            <View style={styles.textInputContainer}>
+              <TextInput style={styles.textInput} placeholder="Alamat Email" />
+            </View>
+            <Gap height={hp('4%')} />
+            <View style={styles.textInputContainer}>
+              <TextInput
+                style={styles.textInput}
+                secureTextEntry={true}
+                placeholder="Password"
+              />
+            </View>
+
+            <Gap height={hp('4%')} />
+            <TouchableOpacity style={styles.buttonContainer} onPress={OnSignin}>
+              <Text style={styles.buttonLabel}>Sign In</Text>
             </TouchableOpacity>
+            <Gap height={hp('2%')} />
+            <View style={styles.bottomTextContainer}>
+              <Text style={styles.bottomText}>Belum punya akun?</Text>
+              <Gap width={5} />
+              <TouchableOpacity
+                style={styles.bottomTextButton}
+                onPress={() => navigation.navigate('Signup')}>
+                <Text style={styles.bottomTextButtonText}>Daftar</Text>
+              </TouchableOpacity>
+            </View>
           </View>
         </View>
-      </View>
-    </ImageBackground>
+      </ImageBackground>
+    );
+  }
+  return (
+    <View>
+      <Text>Signout</Text>
+    </View>
   );
 };
 

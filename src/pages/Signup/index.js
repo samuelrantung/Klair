@@ -14,9 +14,40 @@ import {
 } from 'react-native-responsive-screen';
 import {Gap} from '../../components';
 import {useNavigation} from '@react-navigation/native';
+import auth from '@react-native-firebase/auth';
+import {useForm} from '../../functions';
 
-const Signin = () => {
+const Signup = () => {
   const navigation = useNavigation();
+  const [form, setForm] = useForm({
+    nama: '',
+    email: '',
+    password: '',
+  });
+
+  const OnSignup = () => {
+    auth()
+      .createUserWithEmailAndPassword(form.email, form.password)
+      .then(success => {
+        console.log('User account created & signed in!');
+        const data = {
+          email: form.email,
+          uid: success.user.uid,
+        };
+        console.log('data: ', data);
+      })
+      .catch(error => {
+        if (error.code === 'auth/email-already-in-use') {
+          console.log('That email address is already in use!');
+        }
+
+        if (error.code === 'auth/invalid-email') {
+          console.log('That email address is invalid!');
+        }
+
+        console.error(error);
+      });
+  };
   return (
     <ImageBackground
       source={SigninSignupBG}
@@ -39,11 +70,21 @@ const Signin = () => {
           </View>
           <Gap height={hp('4%')} />
           <View style={styles.textInputContainer}>
-            <TextInput style={styles.textInput} placeholder="Nama" />
+            <TextInput
+              style={styles.textInput}
+              placeholder="Nama"
+              value={form.nama}
+              onChangeText={value => setForm('nama', value)}
+            />
           </View>
           <Gap height={hp('4')} />
           <View style={styles.textInputContainer}>
-            <TextInput style={styles.textInput} placeholder="Alamat Email" />
+            <TextInput
+              style={styles.textInput}
+              placeholder="Alamat Email"
+              value={form.email}
+              onChangeText={value => setForm('email', value)}
+            />
           </View>
           <Gap height={hp('4%')} />
           <View style={styles.textInputContainer}>
@@ -51,11 +92,13 @@ const Signin = () => {
               style={styles.textInput}
               secureTextEntry={true}
               placeholder="Password"
+              value={form.password}
+              onChangeText={value => setForm('password', value)}
             />
           </View>
 
           <Gap height={hp('4%')} />
-          <TouchableOpacity style={styles.buttonContainer}>
+          <TouchableOpacity style={styles.buttonContainer} onPress={OnSignup}>
             <Text style={styles.buttonLabel}>Sign Up</Text>
           </TouchableOpacity>
           <Gap height={hp('2%')} />
@@ -152,4 +195,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Signin;
+export default Signup;
