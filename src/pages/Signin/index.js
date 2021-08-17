@@ -18,6 +18,24 @@ import {useEffect} from 'react';
 import auth from '@react-native-firebase/auth';
 import {useState} from 'react';
 import {useForm} from '../../functions/useForm';
+import {GoogleSignin} from '@react-native-google-signin/google-signin';
+
+GoogleSignin.configure({
+  webClientId:
+    '1052356472372-tdtgn158sdqvpaqlahg1tt525gqcbk6i.apps.googleusercontent.com',
+});
+
+//37:9B:D6:79:47:B6:25:B5:03:F2:4F:A0:9C:E0:24:94:3E:83:41:E7
+//37:9B:D6:79:47:B6:25:B5:03:F2:4F:A0:9C:E0:24:94:3E:83:41:E7
+//37:9B:D6:79:47:B6:25:B5:03:F2:4F:A0:9C:E0:24:94:3E:83:41:E7
+//37:9B:D6:79:47:B6:25:B5:03:F2:4F:A0:9C:E0:24:94:3E:83:41:E7
+//37:9B:D6:79:47:B6:25:B5:03:F2:4F:A0:9C:E0:24:94:3E:83:41:E7
+//37:9B:D6:79:47:B6:25:B5:03:F2:4F:A0:9C:E0:24:94:3E:83:41:E7
+//37:9B:D6:79:47:B6:25:B5:03:F2:4F:A0:9C:E0:24:94:3E:83:41:E7
+//37:9B:D6:79:47:B6:25:B5:03:F2:4F:A0:9C:E0:24:94:3E:83:41:E7
+//37:9B:D6:79:47:B6:25:B5:03:F2:4F:A0:9C:E0:24:94:3E:83:41:E7
+//37:9B:D6:79:47:B6:25:B5:03:F2:4F:A0:9C:E0:24:94:3E:83:41:E7
+//5E:8F:16:06:2E:A3:CD:2C:4A:0D:54:78:76:BA:A6:F3:8C:AB:F6:25
 
 const Signin = () => {
   const navigation = useNavigation();
@@ -60,6 +78,34 @@ const Signin = () => {
     return null;
   }
 
+  const Signout = () => {
+    auth()
+      .signOut()
+      .then(() => console.log('User signed out!'))
+      .catch(err => {
+        console.log('Error when sign out : ', err);
+      });
+  };
+
+  async function onGoogleButtonPress() {
+    // Get the users ID token
+    const {idToken} = await GoogleSignin.signIn();
+
+    // Create a Google credential with the token
+    // const googleCredential = auth.GoogleAuthProvider.credential(idToken);
+    const googleCredential = auth.GoogleAuthProvider.credential(idToken);
+
+    // Sign-in the user with the credential
+    // return auth().signInWithCredential(googleCredential);
+    return auth().signInWithCredential(googleCredential);
+  }
+
+  const googleSignin = () => {
+    onGoogleButtonPress()
+      .then(success => console.log('Succesfully Sign In : ', success))
+      .catch(err => console.log('Error : ', err));
+  };
+
   return (
     <ImageBackground
       source={SigninSignupBG}
@@ -68,6 +114,9 @@ const Signin = () => {
       <Gap height={hp('8%')} />
       <View style={styles.backButtonContainer}>
         {user ? <Text>Signed in : {user.email}</Text> : <Text>Signed out</Text>}
+        <TouchableOpacity onPress={Signout}>
+          <Text>Signout</Text>
+        </TouchableOpacity>
         <TouchableOpacity
           style={styles.backButton}
           onPress={() => navigation.goBack()}>
@@ -113,6 +162,11 @@ const Signin = () => {
               style={styles.bottomTextButton}
               onPress={() => navigation.navigate('Signup')}>
               <Text style={styles.bottomTextButtonText}>Daftar</Text>
+            </TouchableOpacity>
+          </View>
+          <View>
+            <TouchableOpacity onPress={googleSignin}>
+              <Text>Google</Text>
             </TouchableOpacity>
           </View>
         </View>
