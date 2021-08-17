@@ -14,6 +14,7 @@ import {
 } from 'react-native-responsive-screen';
 import {Gap} from '../../components';
 import {useNavigation} from '@react-navigation/native';
+import {firebase} from '../../config/firebase.js';
 
 const Signin = () => {
   const navigation = useNavigation();
@@ -21,6 +22,18 @@ const Signin = () => {
   const OnSignin = () => {
     console.log('Sign in Pressed!');
     navigation.navigate('Dashboard');
+  };
+
+  const signinMethod = provider => {
+    // firebase
+    //   .auth()
+    //   .createUserWithEmailAndPassword('samuel@gmail.com', 'samuel')
+    //   .then(success => {
+    //     console.log('success login : ', success);
+    //   })
+    //   .catch(err => {
+    //     console.log('error', err);
+    //   });
   };
   return (
     <ImageBackground
@@ -56,7 +69,9 @@ const Signin = () => {
           </View>
 
           <Gap height={hp('4%')} />
-          <TouchableOpacity style={styles.buttonContainer} onPress={OnSignin}>
+          <TouchableOpacity
+            style={styles.buttonContainer}
+            onPress={signinMethod}>
             <Text style={styles.buttonLabel}>Sign In</Text>
           </TouchableOpacity>
           <Gap height={hp('2%')} />
@@ -68,6 +83,14 @@ const Signin = () => {
               onPress={() => navigation.navigate('Signup')}>
               <Text style={styles.bottomTextButtonText}>Daftar</Text>
             </TouchableOpacity>
+          </View>
+          <View style={styles.signinMethodContainer}>
+            {/* <TouchableOpacity onPress={() => signinMethod(googleProvider)}>
+              <Text>Google</Text>
+            </TouchableOpacity>
+            <TouchableOpacity onPress={() => signinMethod(facebookProvider)}>
+              <Text>Facebook</Text>
+            </TouchableOpacity> */}
           </View>
         </View>
       </View>
@@ -150,6 +173,13 @@ const styles = StyleSheet.create({
   bottomTextButtonText: {
     fontFamily: fonts.robotoMedium,
     color: colors.light,
+  },
+  signinMethodContainer: {
+    width: '100%',
+    height: 50,
+    backgroundColor: 'yellow',
+    flexDirection: 'row',
+    justifyContent: 'space-around',
   },
 });
 
