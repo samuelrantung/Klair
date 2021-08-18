@@ -28,7 +28,7 @@ import {useNavigation} from '@react-navigation/native';
 import {useEffect} from 'react';
 import auth from '@react-native-firebase/auth';
 import {useState} from 'react';
-import {useForm, facebookSignin, OnGoogleSignin} from '../../functions';
+import {useForm, OnFacebookSignin, OnGoogleSignin} from '../../functions';
 import {useDispatch} from 'react-redux';
 import {SET_LOADING} from '../../redux/counter/loadingSlice';
 
@@ -229,7 +229,10 @@ const Signin = () => {
             </TouchableOpacity>
             <TouchableOpacity
               style={styles.providerButton}
-              onPress={facebookSignin}>
+              onPress={() => {
+                dispatch(SET_LOADING(true));
+                OnFacebookSignin();
+              }}>
               <Image source={FacebookLogo} style={styles.providerButtonImage} />
             </TouchableOpacity>
             <TouchableOpacity

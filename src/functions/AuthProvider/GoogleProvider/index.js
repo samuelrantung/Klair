@@ -31,7 +31,6 @@ const OnGoogleSignin = () => {
       });
   };
   googleOnPress();
-  console.log('end');
   return true;
 };
 
