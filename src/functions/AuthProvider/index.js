@@ -1,4 +1,5 @@
 import OnGoogleSignin from './GoogleProvider';
 import OnFacebookSignin from './FacebookProvider';
+import OnPhoneSignin from './PhoneProvider';
 
-export {OnGoogleSignin, OnFacebookSignin};
+export {OnGoogleSignin, OnFacebookSignin, OnPhoneSignin};

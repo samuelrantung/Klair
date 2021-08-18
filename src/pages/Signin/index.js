@@ -28,7 +28,12 @@ import {useNavigation} from '@react-navigation/native';
 import {useEffect} from 'react';
 import auth from '@react-native-firebase/auth';
 import {useState} from 'react';
-import {useForm, OnFacebookSignin, OnGoogleSignin} from '../../functions';
+import {
+  useForm,
+  OnFacebookSignin,
+  OnGoogleSignin,
+  OnPhoneSignin,
+} from '../../functions';
 import {useDispatch} from 'react-redux';
 import {SET_LOADING} from '../../redux/counter/loadingSlice';
 
@@ -73,9 +78,9 @@ const Signin = () => {
     return subscriber; // unsubscribe on unmount
   }, []);
 
-  if (initializing) {
-    return null;
-  }
+  // if (initializing) {
+  //   return null;
+  // }
 
   const Signout = () => {
     auth()
@@ -86,46 +91,10 @@ const Signin = () => {
       });
   };
 
-  // async function onFacebookButtonPress() {
-  //   // Attempt login with permissions
-  //   const result = await LoginManager.logInWithPermissions([
-  //     'public_profile',
-  //     'email',
-  //   ]);
-
-  //   if (result.isCancelled) {
-  //     throw 'User cancelled the login process';
-  //   }
-
-  //   // Once signed in, get the users AccesToken
-  //   const data = await AccessToken.getCurrentAccessToken();
-
-  //   if (!data) {
-  //     throw 'Something went wrong obtaining access token';
-  //   }
-
-  //   // Create a Firebase credential with the AccessToken
-  //   const facebookCredential = auth.FacebookAuthProvider.credential(
-  //     data.accessToken,
-  //   );
-
-  //   // Sign-in the user with the credential
-  //   return auth().signInWithCredential(facebookCredential);
-  // }
-
-  // const facebookSignin = () => {
-  //   onFacebookButtonPress()
-  //     .then(success => {
-  //       console.log('Success login with facebook : ', success);
-  //     })
-  //     .catch(err => {
-  //       console.log('Error login with facebook : ', err);
-  //     });
-  // };
-
   // Handle the button press
   async function signInWithPhoneNumber(phoneNumber) {
     const confirmation = await auth().signInWithPhoneNumber(phoneNumber);
+    console.log('hehehahahahwkwkwkwk : ', confirmation);
     setConfirm(confirmation);
   }
 
@@ -216,11 +185,6 @@ const Signin = () => {
           <View style={styles.loginProvider}>
             <TouchableOpacity
               style={styles.providerButton}
-              // onPress={() => {
-              //   // dispatch(SET_LOADING(true));
-              //   OnGoogleSignin;
-              // }}>
-
               onPress={() => {
                 dispatch(SET_LOADING(true));
                 OnGoogleSignin();
@@ -237,7 +201,12 @@ const Signin = () => {
             </TouchableOpacity>
             <TouchableOpacity
               style={styles.providerButton}
-              onPress={phoneSignin}>
+              // onPress={phoneSignin}>
+              onPress={async () => {
+                const confirmation = await OnPhoneSignin();
+                setConfirm(confirmation);
+                console.log('confirmation : ', confirmation);
+              }}>
               <Image source={PhoneLogo} style={styles.providerButtonImage} />
             </TouchableOpacity>
           </View>
