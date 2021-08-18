@@ -6,10 +6,19 @@ import {
   ImageBackground,
   TouchableOpacity,
   TextInput,
-  Alert,
+  // Alert,
   Button,
+  Image,
 } from 'react-native';
-import {ArrowBack, colors, fonts, SigninSignupBG} from '../../assets';
+import {
+  ArrowBack,
+  colors,
+  FacebookLogo,
+  fonts,
+  GoogleLogo,
+  PhoneLogo,
+  SigninSignupBG,
+} from '../../assets';
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
@@ -19,25 +28,13 @@ import {useNavigation} from '@react-navigation/native';
 import {useEffect} from 'react';
 import auth from '@react-native-firebase/auth';
 import {useState} from 'react';
-import {useForm} from '../../functions/useForm';
-import {GoogleSignin} from '@react-native-google-signin/google-signin';
-import {LoginManager, AccessToken} from 'react-native-fbsdk-next';
+import {useForm, facebookSignin, googleSignin} from '../../functions';
 
-GoogleSignin.configure({
-  webClientId:
-    '1052356472372-tdtgn158sdqvpaqlahg1tt525gqcbk6i.apps.googleusercontent.com',
-});
+// GoogleSignin.configure({
+//   webClientId:
+//     '1052356472372-tdtgn158sdqvpaqlahg1tt525gqcbk6i.apps.googleusercontent.com',
+// });
 
-//37:9B:D6:79:47:B6:25:B5:03:F2:4F:A0:9C:E0:24:94:3E:83:41:E7
-//37:9B:D6:79:47:B6:25:B5:03:F2:4F:A0:9C:E0:24:94:3E:83:41:E7
-//37:9B:D6:79:47:B6:25:B5:03:F2:4F:A0:9C:E0:24:94:3E:83:41:E7
-//37:9B:D6:79:47:B6:25:B5:03:F2:4F:A0:9C:E0:24:94:3E:83:41:E7
-//37:9B:D6:79:47:B6:25:B5:03:F2:4F:A0:9C:E0:24:94:3E:83:41:E7
-//37:9B:D6:79:47:B6:25:B5:03:F2:4F:A0:9C:E0:24:94:3E:83:41:E7
-//37:9B:D6:79:47:B6:25:B5:03:F2:4F:A0:9C:E0:24:94:3E:83:41:E7
-//37:9B:D6:79:47:B6:25:B5:03:F2:4F:A0:9C:E0:24:94:3E:83:41:E7
-//37:9B:D6:79:47:B6:25:B5:03:F2:4F:A0:9C:E0:24:94:3E:83:41:E7
-//37:9B:D6:79:47:B6:25:B5:03:F2:4F:A0:9C:E0:24:94:3E:83:41:E7
 //5E:8F:16:06:2E:A3:CD:2C:4A:0D:54:78:76:BA:A6:F3:8C:AB:F6:25
 
 const Signin = () => {
@@ -92,67 +89,66 @@ const Signin = () => {
       });
   };
 
-  async function onGoogleButtonPress() {
-    // Get the users ID token
-    const {idToken} = await GoogleSignin.signIn();
+  // async function onGoogleButtonPress() {
+  //   // Get the users ID token
+  //   const {idToken} = await GoogleSignin.signIn();
 
-    // Create a Google credential with the token
-    // const googleCredential = auth.GoogleAuthProvider.credential(idToken);
-    const googleCredential = auth.GoogleAuthProvider.credential(idToken);
+  //   // Create a Google credential with the token
+  //   // const googleCredential = auth.GoogleAuthProvider.credential(idToken);
+  //   const googleCredential = auth.GoogleAuthProvider.credential(idToken);
 
-    // Sign-in the user with the credential
-    // return auth().signInWithCredential(googleCredential);
-    return auth().signInWithCredential(googleCredential);
-  }
+  //   // Sign-in the user with the credential
+  //   // return auth().signInWithCredential(googleCredential);
+  //   return auth().signInWithCredential(googleCredential);
+  // }
 
-  const googleSignin = () => {
-    onGoogleButtonPress()
-      .then(success => console.log('Succesfully Sign In : ', success))
-      .catch(err => console.log('Error : ', err));
-  };
+  // const googleSignin = () => {
+  //   onGoogleButtonPress()
+  //     .then(success => console.log('Succesfully Sign In : ', success))
+  //     .catch(err => console.log('Error : ', err));
+  // };
 
-  async function onFacebookButtonPress() {
-    // Attempt login with permissions
-    const result = await LoginManager.logInWithPermissions([
-      'public_profile',
-      'email',
-    ]);
+  // async function onFacebookButtonPress() {
+  //   // Attempt login with permissions
+  //   const result = await LoginManager.logInWithPermissions([
+  //     'public_profile',
+  //     'email',
+  //   ]);
 
-    if (result.isCancelled) {
-      throw 'User cancelled the login process';
-    }
+  //   if (result.isCancelled) {
+  //     throw 'User cancelled the login process';
+  //   }
 
-    // Once signed in, get the users AccesToken
-    const data = await AccessToken.getCurrentAccessToken();
+  //   // Once signed in, get the users AccesToken
+  //   const data = await AccessToken.getCurrentAccessToken();
 
-    if (!data) {
-      throw 'Something went wrong obtaining access token';
-    }
+  //   if (!data) {
+  //     throw 'Something went wrong obtaining access token';
+  //   }
 
-    // Create a Firebase credential with the AccessToken
-    const facebookCredential = auth.FacebookAuthProvider.credential(
-      data.accessToken,
-    );
+  //   // Create a Firebase credential with the AccessToken
+  //   const facebookCredential = auth.FacebookAuthProvider.credential(
+  //     data.accessToken,
+  //   );
 
-    // Sign-in the user with the credential
-    return auth().signInWithCredential(facebookCredential);
-  }
+  //   // Sign-in the user with the credential
+  //   return auth().signInWithCredential(facebookCredential);
+  // }
 
-  const facebookSignin = () => {
-    onFacebookButtonPress()
-      .then(success => {
-        console.log('Success login with facebook : ', success);
-      })
-      .catch(err => {
-        console.log('Error login with facebook : ', err);
-      });
-  };
+  // const facebookSignin = () => {
+  //   onFacebookButtonPress()
+  //     .then(success => {
+  //       console.log('Success login with facebook : ', success);
+  //     })
+  //     .catch(err => {
+  //       console.log('Error login with facebook : ', err);
+  //     });
+  // };
 
   // Handle the button press
   async function signInWithPhoneNumber(phoneNumber) {
     const confirmation = await auth().signInWithPhoneNumber(phoneNumber);
     setConfirm(confirmation);
-    console.log('confirmation get : ', confirmation);
   }
 
   async function confirmCode() {
@@ -185,7 +181,7 @@ const Signin = () => {
           <Text>Input Text Disabled</Text>
         )}
         <Button title="Confirm Code" onPress={() => confirmCode()} />
-        <Button title="Testing" onPress={Testing} />
+        {/* <Button title="Testing" onPress={Testing} /> */}
 
         <TouchableOpacity onPress={Signout}>
           <Text>Signout</Text>
@@ -242,17 +238,17 @@ const Signin = () => {
             <TouchableOpacity
               style={styles.providerButton}
               onPress={googleSignin}>
-              <Text>Google</Text>
+              <Image source={GoogleLogo} style={styles.providerButtonImage} />
             </TouchableOpacity>
             <TouchableOpacity
               style={styles.providerButton}
               onPress={facebookSignin}>
-              <Text>Facebook</Text>
+              <Image source={FacebookLogo} style={styles.providerButtonImage} />
             </TouchableOpacity>
             <TouchableOpacity
               style={styles.providerButton}
               onPress={phoneSignin}>
-              <Text>Phone</Text>
+              <Image source={PhoneLogo} style={styles.providerButtonImage} />
             </TouchableOpacity>
           </View>
         </View>
@@ -340,15 +336,21 @@ const styles = StyleSheet.create({
   loginProvider: {
     // backgroundColor: 'yellow',
     flexDirection: 'row',
-    justifyContent: 'space-between',
+    justifyContent: 'space-around',
   },
   providerButton: {
-    height: wp('13%'),
-    width: wp('13%'),
-    backgroundColor: 'blue',
+    height: wp('10%'),
+    width: wp('10%'),
+    // backgroundColor: 'blue',
     borderRadius: wp('10%'),
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  providerButtonImage: {
+    // flex: 1,
+    width: '100%',
+    height: '100%',
+    // resizeMode: 'cover',
   },
 });
 
