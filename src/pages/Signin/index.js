@@ -28,14 +28,9 @@ import {useNavigation} from '@react-navigation/native';
 import {useEffect} from 'react';
 import auth from '@react-native-firebase/auth';
 import {useState} from 'react';
-import {useForm, facebookSignin, googleSignin} from '../../functions';
-
-// GoogleSignin.configure({
-//   webClientId:
-//     '1052356472372-tdtgn158sdqvpaqlahg1tt525gqcbk6i.apps.googleusercontent.com',
-// });
-
-//5E:8F:16:06:2E:A3:CD:2C:4A:0D:54:78:76:BA:A6:F3:8C:AB:F6:25
+import {useForm, facebookSignin, OnGoogleSignin} from '../../functions';
+import {useDispatch} from 'react-redux';
+import {SET_LOADING} from '../../redux/counter/loadingSlice';
 
 const Signin = () => {
   const navigation = useNavigation();
@@ -45,6 +40,7 @@ const Signin = () => {
   });
   const [confirm, setConfirm] = useState(null); //Phone Auth
   const [code, setCode] = useState(''); //Phone Auth
+  const dispatch = useDispatch();
 
   const OnSignin = () => {
     // console.log('Sign in Pressed!');
@@ -65,6 +61,7 @@ const Signin = () => {
 
   // Handle user state changes
   function onAuthStateChanged(receivedUser) {
+    dispatch(SET_LOADING(false));
     setUser(receivedUser);
     if (initializing) {
       setInitializing(false);
@@ -88,25 +85,6 @@ const Signin = () => {
         console.log('Error when sign out : ', err);
       });
   };
-
-  // async function onGoogleButtonPress() {
-  //   // Get the users ID token
-  //   const {idToken} = await GoogleSignin.signIn();
-
-  //   // Create a Google credential with the token
-  //   // const googleCredential = auth.GoogleAuthProvider.credential(idToken);
-  //   const googleCredential = auth.GoogleAuthProvider.credential(idToken);
-
-  //   // Sign-in the user with the credential
-  //   // return auth().signInWithCredential(googleCredential);
-  //   return auth().signInWithCredential(googleCredential);
-  // }
-
-  // const googleSignin = () => {
-  //   onGoogleButtonPress()
-  //     .then(success => console.log('Succesfully Sign In : ', success))
-  //     .catch(err => console.log('Error : ', err));
-  // };
 
   // async function onFacebookButtonPress() {
   //   // Attempt login with permissions
@@ -164,8 +142,9 @@ const Signin = () => {
   };
 
   const Testing = () => {
-    const test = auth();
-    console.log('Testing button : ', test._user);
+    // const test = auth();
+    // console.log('Testing button : ', test._user);
+    return 'wkwkwkwk';
   };
   return (
     <ImageBackground
@@ -237,7 +216,15 @@ const Signin = () => {
           <View style={styles.loginProvider}>
             <TouchableOpacity
               style={styles.providerButton}
-              onPress={googleSignin}>
+              // onPress={() => {
+              //   // dispatch(SET_LOADING(true));
+              //   OnGoogleSignin;
+              // }}>
+
+              onPress={() => {
+                dispatch(SET_LOADING(true));
+                OnGoogleSignin();
+              }}>
               <Image source={GoogleLogo} style={styles.providerButtonImage} />
             </TouchableOpacity>
             <TouchableOpacity
