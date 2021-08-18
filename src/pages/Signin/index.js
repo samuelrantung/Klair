@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   TextInput,
   Alert,
+  Button,
 } from 'react-native';
 import {ArrowBack, colors, fonts, SigninSignupBG} from '../../assets';
 import {
@@ -45,6 +46,8 @@ const Signin = () => {
     email: '',
     password: '',
   });
+  const [confirm, setConfirm] = useState(null); //Phone Auth
+  const [code, setCode] = useState(''); //Phone Auth
 
   const OnSignin = () => {
     // console.log('Sign in Pressed!');
@@ -64,8 +67,8 @@ const Signin = () => {
   const [user, setUser] = useState();
 
   // Handle user state changes
-  function onAuthStateChanged(user) {
-    setUser(user);
+  function onAuthStateChanged(receivedUser) {
+    setUser(receivedUser);
     if (initializing) {
       setInitializing(false);
     }
@@ -145,6 +148,29 @@ const Signin = () => {
       });
   };
 
+  // Handle the button press
+  async function signInWithPhoneNumber(phoneNumber) {
+    const confirmation = await auth().signInWithPhoneNumber(phoneNumber);
+    setConfirm(confirmation);
+    console.log('confirmation get : ', confirmation);
+  }
+
+  async function confirmCode() {
+    try {
+      await confirm.confirm(code);
+    } catch (error) {
+      console.log('Invalid code.');
+    }
+  }
+
+  const phoneSignin = () => {
+    signInWithPhoneNumber('+1 650-555-1111');
+  };
+
+  const Testing = () => {
+    const test = auth();
+    console.log('Testing button : ', test._user);
+  };
   return (
     <ImageBackground
       source={SigninSignupBG}
@@ -153,6 +179,14 @@ const Signin = () => {
       <Gap height={hp('8%')} />
       <View style={styles.backButtonContainer}>
         {user ? <Text>Signed in : {user.email}</Text> : <Text>Signed out</Text>}
+        {confirm ? (
+          <TextInput value={code} onChangeText={text => setCode(text)} />
+        ) : (
+          <Text>Input Text Disabled</Text>
+        )}
+        <Button title="Confirm Code" onPress={() => confirmCode()} />
+        <Button title="Testing" onPress={Testing} />
+
         <TouchableOpacity onPress={Signout}>
           <Text>Signout</Text>
         </TouchableOpacity>
@@ -203,14 +237,22 @@ const Signin = () => {
               <Text style={styles.bottomTextButtonText}>Daftar</Text>
             </TouchableOpacity>
           </View>
-          <View>
-            <TouchableOpacity onPress={googleSignin}>
+          <Gap height={hp('2%')} />
+          <View style={styles.loginProvider}>
+            <TouchableOpacity
+              style={styles.providerButton}
+              onPress={googleSignin}>
               <Text>Google</Text>
             </TouchableOpacity>
-          </View>
-          <View>
-            <TouchableOpacity onPress={facebookSignin}>
+            <TouchableOpacity
+              style={styles.providerButton}
+              onPress={facebookSignin}>
               <Text>Facebook</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={styles.providerButton}
+              onPress={phoneSignin}>
+              <Text>Phone</Text>
             </TouchableOpacity>
           </View>
         </View>
@@ -294,6 +336,19 @@ const styles = StyleSheet.create({
   bottomTextButtonText: {
     fontFamily: fonts.robotoMedium,
     color: colors.light,
+  },
+  loginProvider: {
+    // backgroundColor: 'yellow',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
+  providerButton: {
+    height: wp('13%'),
+    width: wp('13%'),
+    backgroundColor: 'blue',
+    borderRadius: wp('10%'),
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 });
 
