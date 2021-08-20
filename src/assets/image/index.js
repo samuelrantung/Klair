@@ -5,6 +5,10 @@ import SigninSignupBG from './signin-signup-bg.png';
 import GoogleLogo from './google-logo.png';
 import FacebookLogo from './facebook-logo.png';
 import PhoneLogo from './phone-logo.png';
+import MailLogo from './mail-logo.png';
+import WarningIcon from './warning-icon.png';
+import VerificationImage from './verification-image.png';
+import PhoneRinging from './phone-ring-icon.png';
 
 export {
   OnBoarding1bg,
@@ -14,4 +18,8 @@ export {
   GoogleLogo,
   FacebookLogo,
   PhoneLogo,
+  MailLogo,
+  WarningIcon,
+  VerificationImage,
+  PhoneRinging,
 };

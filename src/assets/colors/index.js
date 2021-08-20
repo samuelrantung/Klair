@@ -3,6 +3,7 @@ const listColors = {
   secondary: '#FFDA77',
   tertiary: '#AEE6E6',
   light: '#FBF6F0',
+  darkGrey: '#999999',
 };
 
 export const colors = {
@@ -12,4 +13,5 @@ export const colors = {
   secondaryGold: listColors.secondary,
   lightBlue: listColors.tertiary,
   light: listColors.light,
+  darkGrey: listColors.darkGrey,
 };

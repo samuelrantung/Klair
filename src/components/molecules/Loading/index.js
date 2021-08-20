@@ -1,12 +1,16 @@
 import React from 'react';
 import {ActivityIndicator, StyleSheet, Text, View} from 'react-native';
-import {colors} from '../../../assets';
+import {colors, fonts} from '../../../assets';
+import {
+  widthPercentageToDP as wp,
+  heightPercentageToDP as hp,
+} from 'react-native-responsive-screen';
 
 const Loading = () => {
   return (
     <View style={styles.wrapper}>
-      <ActivityIndicator size="large" color={colors.white} />
-      <Text style={styles.text}>Loading...</Text>
+      <ActivityIndicator size="large" color={colors.black} />
+      <Text style={styles.text}>LOADING</Text>
     </View>
   );
 };
@@ -19,14 +23,14 @@ const styles = StyleSheet.create({
     position: 'absolute',
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: colors.blackTransparent,
+    backgroundColor: 'rgba(255, 255, 255, 0.1)',
     width: '100%',
     height: '100%',
   },
   text: {
     fontSize: 18,
-    // color: colors.white,
-    // fontFamily: fonts.Poppins[800],
+    color: colors.black,
+    fontFamily: fonts.robotoMedium,
     marginTop: 16,
   },
 });
