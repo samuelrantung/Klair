@@ -41,6 +41,11 @@ import {
 import {useDispatch} from 'react-redux';
 import {SET_LOADING} from '../../redux/counter/loadingSlice';
 import CodeInput from 'react-native-confirmation-code-input';
+import {
+  PhoneNumberForm,
+  EmailAndPasswordForm,
+  CodeInputFalse,
+} from './components';
 
 const Signin = () => {
   const navigation = useNavigation();
@@ -54,6 +59,7 @@ const Signin = () => {
   const [phoneNumber, setPhoneNumber] = useState(''); //Phone Auth
   const [checkInput, setCheckInput] = useState(true); //Phone Auth
   const [confirmationForm, setConfirmationForm] = useState(false); //Phone Auth
+  const [codeCheck, setCodeCheck] = useState(true); //Phone Auth
   const dispatch = useDispatch();
 
   const OnSignin = () => {
@@ -90,6 +96,16 @@ const Signin = () => {
   // if (initializing) {
   //   return null;
   // }
+  async function confirmCode(codes) {
+    try {
+      await confirm.confirm(codes);
+      return true;
+    } catch (error) {
+      console.log('Invalid code.');
+      // confirmationForm(true);
+      return false;
+    }
+  }
 
   const Signout = () => {
     auth()
@@ -99,14 +115,6 @@ const Signin = () => {
         console.log('Error when sign out : ', err);
       });
   };
-
-  async function confirmCode() {
-    try {
-      await confirm.confirm(code);
-    } catch (error) {
-      console.log('Invalid code.');
-    }
-  }
 
   const Testing = () => {
     // const test = auth();
@@ -121,6 +129,26 @@ const Signin = () => {
     return true;
   };
 
+  const EmailFormCallback = data => {
+    console.log('data from email form', data);
+    setForm('email', data);
+  };
+  const PasswordFormCallback = data => {
+    console.log('data from password form', data);
+    setForm('password', data);
+  };
+  const PhoneNumberFormCallback = data => {
+    console.log('data from phoneNumberFormCallback : ', data);
+    setPhoneNumber(data);
+  };
+  const CodeCheckCallback = data => {
+    console.log('data from CodeCheckCallback', data);
+    setCodeCheck(data);
+  };
+  const ConfirmationFormCallback = data => {
+    console.log('data from ConfirmationFormCallback : ', data);
+    setConfirmationForm(data);
+  };
   return (
     <ImageBackground
       source={SigninSignupBG}
@@ -129,17 +157,12 @@ const Signin = () => {
       <Gap height={hp('8%')} />
       <View style={styles.backButtonContainer}>
         {user ? <Text>Signed in : {user.email}</Text> : <Text>Signed out</Text>}
-        {confirm ? (
-          <TextInput value={code} onChangeText={text => setCode(text)} />
-        ) : (
-          <Text>Input Text Disabled</Text>
-        )}
-        {/* <Button title="Confirm Code" onPress={() => confirmCode()} /> */}
-        {/* <Button title="Testing" onPress={Testing} /> */}
+        {/* debugging */}
 
         <TouchableOpacity onPress={Signout}>
           <Text>Signout</Text>
         </TouchableOpacity>
+
         <TouchableOpacity
           style={styles.backButton}
           onPress={() => navigation.goBack()}>
@@ -154,79 +177,49 @@ const Signin = () => {
             <Text style={styles.smallTitle}>Let's sign you in.</Text>
           </View>
           <Gap height={hp('8%')} />
-          {phoneForm ? ( //Email and password form
-            <View>
-              <View style={styles.textInputContainer}>
-                <TextInput
-                  style={styles.textInput}
-                  placeholder="Alamat Email"
-                  value={form.email}
-                  onChangeText={value => setForm('email', value)}
-                />
-              </View>
-              <Gap height={hp('4%')} />
-              <View style={styles.textInputContainer}>
-                <TextInput
-                  style={styles.textInput}
-                  secureTextEntry={true}
-                  placeholder="Password"
-                  value={form.password}
-                  onChangeText={value => setForm('password', value)}
-                />
-              </View>
-            </View>
+          {phoneForm ? ( //Phone number form
+            <PhoneNumberForm
+              checkInput={checkInput}
+              phoneNumber={phoneNumber}
+              parentCallback={PhoneNumberFormCallback}
+            />
           ) : (
-            // Phone number form
-            <View>
-              {!checkInput && (
-                <View style={styles.warningContainer}>
-                  <Image source={WarningIcon} style={styles.warningIcon} />
-                  <Text style={styles.warningText}>
-                    Mohon mengisi nomor telepon anda
-                  </Text>
-                </View>
-              )}
-              <View style={styles.textInputPhoneContainer}>
-                <Text style={styles.countryCode}>+62</Text>
-                <TextInput
-                  style={styles.textInput}
-                  placeholder="Nomor Telepon"
-                  keyboardType="number-pad"
-                  value={phoneNumber}
-                  onChangeText={value => setPhoneNumber(value)}
-                />
-              </View>
-              <Gap height={hp('4%')} />
-            </View>
+            //Email and password form
+            <EmailAndPasswordForm
+              parentCallbackEmail={EmailFormCallback}
+              parentCallbackPassword={PasswordFormCallback}
+              form={form}
+            />
           )}
 
           <Gap height={hp('4%')} />
-          {phoneForm ? ( //Button Signin Email
+          {phoneForm ? (
+            //Button Signin Phone Number
+            <TouchableOpacity
+              style={styles.buttonContainer}
+              onPress={async () => {
+                const check = await CheckTextInput();
+                if (check) {
+                  setCheckInput(true);
+                  dispatch(SET_LOADING(true));
+                  const confirmation = await OnPhoneSignin(`+1 ${phoneNumber}`);
+                  setConfirmationForm(true);
+
+                  dispatch(SET_LOADING(false));
+                  setConfirm(confirmation);
+                } else {
+                  setCheckInput(false);
+                }
+              }}>
+              <Text style={styles.buttonLabel}>Sign In</Text>
+            </TouchableOpacity>
+          ) : (
+            //Button Signin Email
             <TouchableOpacity
               style={styles.buttonContainer}
               onPress={() => {
                 dispatch(SET_LOADING(true));
                 OnSignin();
-              }}>
-              <Text style={styles.buttonLabel}>Sign In</Text>
-            </TouchableOpacity>
-          ) : (
-            //Button Signin Phone Number
-            <TouchableOpacity
-              style={styles.buttonContainer}
-              onPress={async () => {
-                // OnPhoneSignin(phoneNumber);
-                // dispatch(SET_LOADING(true));
-                const check = await CheckTextInput();
-                if (check) {
-                  setCheckInput(check);
-                  // const confirmation = await OnPhoneSignin(phoneNumber);
-                  // setConfirm(confirmation);
-                  setConfirmationForm(check);
-                } else {
-                  // dispatch(SET_LOADING(false));
-                  setCheckInput(false);
-                }
               }}>
               <Text style={styles.buttonLabel}>Sign In</Text>
             </TouchableOpacity>
@@ -262,11 +255,7 @@ const Signin = () => {
             <TouchableOpacity
               style={styles.providerButton}
               onPress={async () => {
-                // dispatch(SET_LOADING(true));
                 setPhoneForm(!phoneForm);
-                // const confirmation = await OnPhoneSignin();
-                // dispatch(SET_LOADING(false));
-                // setConfirm(confirmation);
               }}>
               {phoneForm ? ( //Phone or email button
                 <Image source={PhoneLogo} style={styles.providerButtonImage} />
@@ -296,21 +285,45 @@ const Signin = () => {
                 <Text style={styles.confirmationContentText} numberOfLines={2}>
                   Please type the verification code sent to{' '}
                   <Text style={styles.confirmationContentTextPhoneNumber}>
-                    +1 123 456 7777
+                    +62 {phoneNumber}
                   </Text>
                 </Text>
               </View>
               <View style={styles.codeInputWrapper}>
-                <CodeInput
-                  codeLength={6}
-                  activeColor={colors.black}
-                  // inactiveColor={colors.darkGrey}
-                  autoFocus={false}
-                  inputPosition="center"
-                  size={35}
-                  containerStyle={styles.codeInputContainer}
-                  codeInputStyle={styles.codeInputStyle}
-                />
+                {codeCheck ? (
+                  <View>
+                    <Text style={styles.warningText} />
+                    <CodeInput
+                      codeLength={6}
+                      activeColor={colors.black}
+                      autoFocus={false}
+                      inputPosition="center"
+                      size={35}
+                      containerStyle={styles.codeInputContainer}
+                      codeInputStyle={styles.codeInputStyle}
+                      keyboardType="number-pad"
+                      onFulfill={async res => {
+                        const status = await confirmCode(res);
+                        console.log('check status returned', status);
+                        if (status) {
+                          console.log('status is true');
+                          setCodeCheck(true);
+                          setConfirmationForm(false);
+                        } else if (status === false) {
+                          console.log('status is false');
+                          setCodeCheck(false);
+                        }
+                      }}
+                    />
+                  </View>
+                ) : (
+                  <CodeInputFalse
+                    confirm={confirm}
+                    callbackCodeCheck={CodeCheckCallback}
+                    callbackConfirmationForm={ConfirmationFormCallback}
+                    confirmCode={confirmCode}
+                  />
+                )}
               </View>
               <View style={styles.confirmationContentButtonContainer}>
                 <Gap height={'20%'} />
@@ -320,6 +333,9 @@ const Signin = () => {
                   backgroundColor={colors.primaryGold}
                   borderRadius={30}
                   label="CONFIRM"
+                  onPress={() => {
+                    setCodeCheck(!codeCheck);
+                  }}
                 />
                 <Gap height={'15%'} />
                 <Button
@@ -329,6 +345,9 @@ const Signin = () => {
                   borderRadius={30}
                   label="Cancel"
                   color={colors.darkGrey}
+                  onPress={() => {
+                    setConfirmationForm(false);
+                  }}
                 />
               </View>
             </View>
@@ -528,10 +547,21 @@ const styles = StyleSheet.create({
     borderWidth: 3,
     borderRadius: wp('2%'),
     borderColor: colors.primaryGold,
-    padding: 10,
+    padding: '10%',
     justifyContent: 'center',
     alignItems: 'center',
     height: '20%',
+    bottom: 20,
+  },
+  codeInputContainerFalse: {
+    borderWidth: 3,
+    borderRadius: wp('2%'),
+    borderColor: 'red',
+    padding: '10%',
+    justifyContent: 'center',
+    alignItems: 'center',
+    height: '20%',
+    bottom: 20,
   },
   codeInputStyle: {
     backgroundColor: colors.lightBlue,
