@@ -13,17 +13,6 @@ const CodeInputFalse = ({
   callbackConfirmationForm,
   confirmCode,
 }) => {
-  // async function confirmCode(codes) {
-  //     try {
-  //       await confirm.confirm(codes);
-  //       return true;
-  //     } catch (error) {
-  //       console.log('Invalid code.');
-  //       // confirmationForm(true);
-  //       return false;
-  //     }
-  //   }
-
   return (
     <View>
       <Text style={styles.warningText}>Code yang anda masukkan salah</Text>
@@ -39,12 +28,9 @@ const CodeInputFalse = ({
         onFulfill={async res => {
           const status = await confirmCode(res);
           if (status) {
-            // setCodeCheck(true);
             callbackCodeCheck(true);
-            // setConfirmationForm(false);
             callbackConfirmationForm(false);
           } else if (status === false) {
-            // setCodeCheck(false);
             callbackCodeCheck(false);
           }
         }}

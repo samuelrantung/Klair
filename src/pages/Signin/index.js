@@ -5,9 +5,6 @@ import {
   View,
   ImageBackground,
   TouchableOpacity,
-  TextInput,
-  // Alert,
-  // Button,
   Image,
 } from 'react-native';
 import {
@@ -21,7 +18,6 @@ import {
   PhoneRinging,
   SigninSignupBG,
   VerificationImage,
-  WarningIcon,
 } from '../../assets';
 import {
   widthPercentageToDP as wp,
@@ -54,7 +50,6 @@ const Signin = () => {
     password: '',
   });
   const [confirm, setConfirm] = useState(null); //Phone Auth
-  const [code, setCode] = useState(''); //Phone Auth
   const [phoneForm, setPhoneForm] = useState(false); //Phone Auth
   const [phoneNumber, setPhoneNumber] = useState(''); //Phone Auth
   const [checkInput, setCheckInput] = useState(true); //Phone Auth
@@ -63,12 +58,11 @@ const Signin = () => {
   const dispatch = useDispatch();
 
   const OnSignin = () => {
-    // console.log('Sign in Pressed!');
-    // navigation.navigate('Dashboard');
     auth()
       .signInWithEmailAndPassword(form.email, form.password)
       .then(success => {
         console.log('Succesfully login : ', success);
+        // navigation.navigate('Dashboard');
       })
       .catch(err => {
         console.log('Error : ', err);
@@ -81,6 +75,10 @@ const Signin = () => {
 
   // Handle user state changes
   function onAuthStateChanged(receivedUser) {
+    console.log('receivedUser : ', receivedUser);
+    if (receivedUser !== null) {
+      navigation.navigate('Dashboard');
+    }
     dispatch(SET_LOADING(false));
     setUser(receivedUser);
     if (initializing) {
@@ -93,16 +91,12 @@ const Signin = () => {
     return subscriber; // unsubscribe on unmount
   }, []);
 
-  // if (initializing) {
-  //   return null;
-  // }
   async function confirmCode(codes) {
     try {
       await confirm.confirm(codes);
       return true;
     } catch (error) {
       console.log('Invalid code.');
-      // confirmationForm(true);
       return false;
     }
   }
@@ -116,12 +110,6 @@ const Signin = () => {
       });
   };
 
-  const Testing = () => {
-    // const test = auth();
-    // console.log('Testing button : ', test._user);
-    return 'wkwkwkwk';
-  };
-
   const CheckTextInput = () => {
     if (!phoneNumber.trim()) {
       return false;
@@ -130,23 +118,18 @@ const Signin = () => {
   };
 
   const EmailFormCallback = data => {
-    console.log('data from email form', data);
     setForm('email', data);
   };
   const PasswordFormCallback = data => {
-    console.log('data from password form', data);
     setForm('password', data);
   };
   const PhoneNumberFormCallback = data => {
-    console.log('data from phoneNumberFormCallback : ', data);
     setPhoneNumber(data);
   };
   const CodeCheckCallback = data => {
-    console.log('data from CodeCheckCallback', data);
     setCodeCheck(data);
   };
   const ConfirmationFormCallback = data => {
-    console.log('data from ConfirmationFormCallback : ', data);
     setConfirmationForm(data);
   };
   return (
@@ -334,7 +317,7 @@ const Signin = () => {
                   borderRadius={30}
                   label="CONFIRM"
                   onPress={() => {
-                    setCodeCheck(!codeCheck);
+                    setCodeCheck(false);
                   }}
                 />
                 <Gap height={'15%'} />
