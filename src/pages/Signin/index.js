@@ -42,6 +42,8 @@ import {
   EmailAndPasswordForm,
   CodeInputFalse,
 } from './components';
+import {storeData} from '../../storage';
+import firestore from '@react-native-firebase/firestore';
 
 const Signin = () => {
   const navigation = useNavigation();
@@ -58,31 +60,117 @@ const Signin = () => {
   const dispatch = useDispatch();
 
   const OnSignin = () => {
-    auth()
-      .signInWithEmailAndPassword(form.email, form.password)
-      .then(success => {
-        console.log('Succesfully login : ', success);
-        // navigation.navigate('Dashboard');
-      })
-      .catch(err => {
-        console.log('Error : ', err);
-      });
+    if (form.email && form.password) {
+      auth()
+        .signInWithEmailAndPassword(form.email, form.password)
+        .then(success => {
+          console.log('Succesfully login : ', success);
+          navigation.navigate('Dashboard');
+          dispatch(SET_LOADING(false));
+        })
+        .catch(err => {
+          dispatch(SET_LOADING(false));
+          console.log('Error : ', err);
+        });
+    } else {
+      dispatch(SET_LOADING(false));
+      console.log('email atau password kosong');
+    }
   };
 
   // Set an initializing state whilst Firebase connects
   const [initializing, setInitializing] = useState(true);
   const [user, setUser] = useState();
 
+  function notGmailSignin(receivedUser) {
+    return firestore()
+      .collection('users')
+      .doc(receivedUser._user.uid)
+      .set({
+        email: receivedUser._user.email,
+        phoneNumber: receivedUser._user.phoneNumber,
+        name: receivedUser._user.displayName,
+        photoURL: receivedUser._user.photoURL,
+      })
+      .then(() => {
+        storeData('user', receivedUser);
+        navigation.reset({
+          index: 0,
+          actions: navigation.navigate('Dashboard'),
+        });
+        if (receivedUser !== null) {
+        }
+        dispatch(SET_LOADING(false));
+        setUser(receivedUser);
+        if (initializing) {
+          setInitializing(false);
+        }
+        // console.log("user doesn't exists");
+      });
+  }
+
+  function gmailSignin(receivedUser) {
+    return firestore()
+      .collection('users')
+      .doc(receivedUser._user.uid)
+      .set({
+        email: receivedUser._user.providerData[0].email,
+        phoneNumber: receivedUser._user.phoneNumber,
+        name: receivedUser._user.displayName,
+        photoURL: receivedUser._user.photoURL,
+      })
+      .then(() => {
+        storeData('user', receivedUser);
+        navigation.reset({
+          index: 0,
+          actions: navigation.navigate('Dashboard'),
+        });
+        // if (receivedUser !== null) {
+        // }
+        dispatch(SET_LOADING(false));
+        setUser(receivedUser);
+        if (initializing) {
+          setInitializing(false);
+        }
+      });
+  }
   // Handle user state changes
   function onAuthStateChanged(receivedUser) {
-    console.log('receivedUser : ', receivedUser);
-    if (receivedUser !== null) {
-      navigation.navigate('Dashboard');
-    }
-    dispatch(SET_LOADING(false));
-    setUser(receivedUser);
-    if (initializing) {
-      setInitializing(false);
+    if (receivedUser) {
+      console.log('start');
+      firestore()
+        .collection('users')
+        .doc(receivedUser._user.uid)
+        .get()
+        .then(res => {
+          if (res.exists) {
+            dispatch(SET_LOADING(false));
+            console.log('received : ', receivedUser);
+            setUser(receivedUser);
+            storeData('user', receivedUser);
+            navigation.navigate('Dashboard');
+            // navigation.reset({
+            //   index: 0,
+            //   actions: navigation.navigate('Dashboard'),
+            // });
+            console.log('user exists', receivedUser);
+            // if(receivedUser.email){
+
+            // }
+          } else {
+            //user first time login
+            console.log('hehehe');
+            if (receivedUser.email) {
+              notGmailSignin(receivedUser);
+            } else if (receivedUser.email === null) {
+              gmailSignin(receivedUser);
+            }
+            console.log("user doesn't exists");
+          }
+        })
+        .catch(e => {
+          console.log('Error : ', e);
+        });
     }
   }
 

@@ -1,15 +1,14 @@
 import {createStackNavigator} from '@react-navigation/stack';
 import React from 'react';
 import {StyleSheet, Text, View} from 'react-native';
-import {Signin, Onboarding} from '../pages';
-import Dashboard from '../pages/Dasboard';
-import Signup from '../pages/Signup';
+import {Signin, Dashboard, Signup, Onboarding} from '../pages';
+import Penjualan from '../pages/Penjualan';
 
 const Stack = createStackNavigator();
 
 const Router = () => {
   return (
-    <Stack.Navigator initialRouteName="Signin">
+    <Stack.Navigator initialRouteName="Penjualan">
       <Stack.Screen
         name="Signin"
         component={Signin}
@@ -28,6 +27,11 @@ const Router = () => {
       <Stack.Screen
         name="Dashboard"
         component={Dashboard}
+        options={{headerShown: false}}
+      />
+      <Stack.Screen
+        name="Penjualan"
+        component={Penjualan}
         options={{headerShown: false}}
       />
     </Stack.Navigator>

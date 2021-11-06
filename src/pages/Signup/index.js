@@ -16,6 +16,7 @@ import {Gap} from '../../components';
 import {useNavigation} from '@react-navigation/native';
 import auth from '@react-native-firebase/auth';
 import {useForm} from '../../functions';
+import firestore from '@react-native-firebase/firestore';
 
 const Signup = () => {
   const navigation = useNavigation();
@@ -28,13 +29,13 @@ const Signup = () => {
   const OnSignup = () => {
     auth()
       .createUserWithEmailAndPassword(form.email, form.password)
-      .then(success => {
-        console.log('User account created & signed in!');
-        const data = {
-          email: form.email,
-          uid: success.user.uid,
-        };
-        console.log('data: ', data);
+      .then(res => {
+        return firestore().collection('users').doc(res.user.uid).set({
+          email: res.user.email,
+          phoneNumber: res.user.phoneNumber,
+          name: res.user.displayName,
+          photoURL: res.user.photoURL,
+        });
       })
       .catch(error => {
         if (error.code === 'auth/email-already-in-use') {
@@ -166,7 +167,7 @@ const styles = StyleSheet.create({
     borderRadius: 13,
     width: '100%',
     height: hp('6.5%'),
-    padding: 7,
+    paddingHorizontal: 7,
   },
   buttonContainer: {
     backgroundColor: colors.lightBlue,

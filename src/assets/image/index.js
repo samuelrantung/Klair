@@ -9,8 +9,10 @@ import MailLogo from './mail-logo.png';
 import WarningIcon from './warning-icon.png';
 import VerificationImage from './verification-image.png';
 import PhoneRinging from './phone-ring-icon.png';
+import PenjualanBg from './penjualan-bg.png';
 
 export {
+  PenjualanBg,
   OnBoarding1bg,
   OnBoarding2bg,
   OnBoarding3bg,
