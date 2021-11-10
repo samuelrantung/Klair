@@ -5,4 +5,6 @@ export const fonts = {
   robotoMedium: 'Roboto-Medium',
   robotoRegular: 'Roboto-Regular',
   poppins: 'Poppins',
+  poppinsBold: 'Poppins-Bold',
+  poppinsMedium: 'Poppins-Medium',
 };

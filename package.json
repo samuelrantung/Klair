@@ -28,7 +28,8 @@
     "react-native-screens": "^3.5.0",
     "react-native-svg": "^12.1.1",
     "react-native-swiper": "^1.6.0",
-    "react-redux": "^7.2.4"
+    "react-redux": "^7.2.4",
+    "rn-swipeable-panel": "^1.2.6"
   },
   "devDependencies": {
     "@babel/core": "^7.15.0",

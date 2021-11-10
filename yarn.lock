@@ -6459,6 +6459,13 @@ rimraf@~2.6.2:
   dependencies:
     glob "^7.1.3"
 
+rn-swipeable-panel@^1.2.5, rn-swipeable-panel@^1.2.6:
+  version "1.2.6"
+  resolved "https://registry.yarnpkg.com/rn-swipeable-panel/-/rn-swipeable-panel-1.2.6.tgz#a7c2b090ecfd8c43ad91abd553100cb79f5a33ee"
+  integrity sha512-jZ5wsrtSUddf1GJR6Xc14ohum0R3RpEfD8UyX6nSAcpNAACErR+kwKlyp60yiF95bTy6fqB3+/udcQ4eOo+NXw==
+  dependencies:
+    rn-swipeable-panel "^1.2.5"
+
 rsvp@^4.8.4:
   version "4.8.5"
   resolved "https://registry.yarnpkg.com/rsvp/-/rsvp-4.8.5.tgz#c8f155311d167f68f21e168df71ec5b083113734"
