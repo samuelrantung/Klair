@@ -23,6 +23,8 @@ import {
   UserIcon2,
 } from '../../assets';
 import {Gap} from '../../components';
+import DatePicker from 'react-native-date-picker';
+import moment from 'moment';
 
 const Product = () => {
   return (
@@ -80,6 +82,8 @@ const Penjualan = () => {
     // ...or any prop you want
   });
   const [isPanelActive, setIsPanelActive] = useState(false);
+  const [date, setDate] = useState(new Date());
+  const [open, setOpen] = useState(false);
 
   const openPanel = () => {
     setIsPanelActive(true);
@@ -88,6 +92,7 @@ const Penjualan = () => {
   const closePanel = () => {
     setIsPanelActive(false);
   };
+  console.log('date: ', date);
   return (
     <>
       <ImageBackground style={styles.background} source={PenjualanBg}>
@@ -99,8 +104,10 @@ const Penjualan = () => {
             <TouchableOpacity>
               <ArrowBack2 />
             </TouchableOpacity>
-            <Text style={styles.dateText}>22 September 2021</Text>
-            <TouchableOpacity>
+            <Text style={styles.dateText}>
+              {moment(date).format('D MMMM yyyy')}
+            </Text>
+            <TouchableOpacity onPress={() => setOpen(true)}>
               <Calendar />
             </TouchableOpacity>
           </View>
@@ -143,6 +150,19 @@ const Penjualan = () => {
             </View>
           </View>
           <Gap height={250} />
+          <DatePicker
+            modal
+            mode="date"
+            open={open}
+            date={date}
+            onConfirm={date => {
+              setOpen(false);
+              setDate(date);
+            }}
+            onCancel={() => {
+              setOpen(false);
+            }}
+          />
         </ScrollView>
         {/* <TouchableOpacity
           onPress={() => {
