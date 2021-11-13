@@ -93,7 +93,7 @@ const styles = StyleSheet.create({
   },
   saveButton: {
     backgroundColor: colors.primaryGold,
-    width: '50%',
+    width: 160,
     borderRadius: 20,
     paddingVertical: 6,
     justifyContent: 'center',

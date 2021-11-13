@@ -41,9 +41,25 @@ const Penjualan = () => {
   const [isPanelActive, setIsPanelActive] = useState(false);
   const [date, setDate] = useState(new Date());
   const [open, setOpen] = useState(false);
+
   const [openUserAccount, setOpenUserAccount] = useState(false);
   const [userAccount, setUserAccount] = useState(null);
   const [userAccountItems, setUserAccountItems] = useState([
+    {label: 'Apple', value: 'apple'},
+    {label: 'Banana', value: 'banana'},
+    {label: 'Banana', value: 'bananawef'},
+    {label: 'Banana', value: 'bananawefsdf'},
+    {label: 'Banana', value: 'bananawefsdfsdf'},
+    {label: 'Banana', value: 'bananawefsdfsdfsdf'},
+    {label: 'Banana', value: 'bananawefsdfsdfsdfsdfs'},
+    {label: 'Banana', value: 'bananawefsdfsdfsdfsdfswer'},
+    {label: 'Banana', value: 'bananawefsdfsdfsdfsdfswer34234'},
+    {label: 'Banana', value: 'bananawefsdfsdfsdfsdfswer34234sdfwe'},
+  ]);
+
+  const [openCustomer, setOpenCustomer] = useState(false);
+  const [customer, setCustomer] = useState(null);
+  const [customerItems, setCustomerItems] = useState([
     {label: 'Apple', value: 'apple'},
     {label: 'Banana', value: 'banana'},
     {label: 'Banana', value: 'bananawef'},
@@ -63,67 +79,77 @@ const Penjualan = () => {
   const closePanel = () => {
     setIsPanelActive(false);
   };
-  console.log('date: ', date);
   return (
     <View style={{flex: 1}}>
       <ImageBackground style={styles.background} source={PenjualanBg}>
-        {/* <View style={styles.container}> */}
-        <Text style={styles.title}>PENJUALAN</Text>
-        <Gap height={11} />
+        <View style={styles.insideContainer}>
+          <Text style={styles.title}>PENJUALAN</Text>
+          <Gap height={11} />
 
-        <View style={styles.topButtonContainer}>
-          <TouchableOpacity>
-            <ArrowBack2 />
-          </TouchableOpacity>
-          <Text style={styles.dateText}>
-            {moment(date).format('D MMMM yyyy')}
-          </Text>
-          <TouchableOpacity onPress={() => setOpen(true)}>
-            <Calendar />
-          </TouchableOpacity>
-        </View>
-        <Gap height={24} />
-        {/* <View> */}
-        <View>
-          <View style={styles.userAccountContainer}>
-            <UserIcon />
-            <View style={styles.userAccountDropdownContainer}>
-              <DropDownPicker
-                open={openUserAccount}
-                searchable
-                value={userAccount}
-                items={userAccountItems}
-                setOpen={setOpenUserAccount}
-                setValue={setUserAccount}
-                setItems={setUserAccountItems}
-                style={styles.userAccountDropdown}
-                placeholder="Pilih nama pegawai"
-                zIndex={2000}
-                dropDownContainerStyle={{
-                  // backgroundColor: 'yellow',
-                  borderColor: 'white',
-                }}
-              />
-            </View>
+          <View style={styles.topButtonContainer}>
+            <TouchableOpacity>
+              <ArrowBack2 />
+            </TouchableOpacity>
+            <Text style={styles.dateText}>
+              {moment(date).format('D MMMM yyyy')}
+            </Text>
+            <TouchableOpacity onPress={() => setOpen(true)}>
+              <Calendar />
+            </TouchableOpacity>
           </View>
-          <Gap height={12} />
-          <View style={styles.customerContainer}>
-            <View style={styles.customerTypeContainer}>
-              <View style={styles.customerTypeContainerLeft}>
+          <Gap height={24} />
+          {/* <View> */}
+          <View>
+            <View style={styles.userAccountContainer}>
+              <UserIcon />
+              <View style={styles.userAccountDropdownContainer}>
+                <DropDownPicker
+                  open={openUserAccount}
+                  searchable
+                  value={userAccount}
+                  items={userAccountItems}
+                  setOpen={setOpenUserAccount}
+                  setValue={setUserAccount}
+                  setItems={setUserAccountItems}
+                  style={styles.userAccountDropdown}
+                  placeholder="Pilih nama pegawai"
+                  zIndex={2000}
+                  dropDownContainerStyle={
+                    styles.userAccountDropdownContainerStyle
+                  }
+                />
+              </View>
+            </View>
+            <Gap height={12} />
+            <View style={styles.customerContainer}>
+              <View style={styles.customerTypeContainer}>
                 <UserIcon2 />
+                <View style={styles.customerTypeContainerRight}>
+                  <Text style={styles.customerTypeText}>Customer</Text>
+                </View>
               </View>
-              <View style={styles.customerTypeContainerRight}>
-                <Text>Customer</Text>
+              <Gap width={15} />
+              <View style={styles.customerNameDropdownContainer}>
+                <DropDownPicker
+                  open={openCustomer}
+                  searchable
+                  value={customer}
+                  items={customerItems}
+                  setOpen={setOpenCustomer}
+                  setValue={setCustomer}
+                  setItems={setCustomerItems}
+                  style={styles.customerNameDropdown}
+                  placeholder="Pilih nama pegawai"
+                  zIndex={1000}
+                  dropDownContainerStyle={
+                    styles.userAccountDropdownContainerStyle
+                  }
+                />
               </View>
-            </View>
-            <View style={styles.customerNameContainer}>
-              <Text style={styles.customerNameText}>Chandra Mangare</Text>
             </View>
           </View>
-          {/* </View> */}
-          <Gap height={28} />
-          <Gap height={48} />
 
+          <Gap height={68} />
           <View style={styles.itemWrapper}>
             <View style={styles.itemContainer}>
               <Text style={styles.detailText}>
@@ -137,6 +163,7 @@ const Penjualan = () => {
             </TouchableOpacity>
           </View>
         </View>
+
         <Gap height={250} />
         <DatePicker
           modal
@@ -151,7 +178,6 @@ const Penjualan = () => {
             setOpen(false);
           }}
         />
-        {/* </View> */}
       </ImageBackground>
       <SwipeablePanel
         {...panelProps}
@@ -176,12 +202,11 @@ export default Penjualan;
 const styles = StyleSheet.create({
   background: {
     flex: 1,
-    paddingHorizontal: 30,
+    // paddingHorizontal: 30,
     paddingTop: 18,
   },
-  container: {
+  insideContainer: {
     paddingHorizontal: 30,
-    paddingTop: 18,
     flex: 1,
   },
   title: {
@@ -207,6 +232,7 @@ const styles = StyleSheet.create({
   },
   customerContainer: {
     flexDirection: 'row',
+    width: '100%',
   },
   userAccountDropdownContainer: {
     // backgroundColor: 'red',
@@ -224,6 +250,10 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
     paddingVertical: 0,
     height: 28,
+    borderRadius: 5,
+  },
+  userAccountDropdownContainerStyle: {
+    borderColor: 'white',
   },
   customerTypeContainer: {
     flexDirection: 'row',
@@ -232,26 +262,22 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     alignItems: 'center',
     paddingHorizontal: 9,
-    paddingVertical: 6,
+    height: 28,
+    justifyContent: 'center',
   },
   customerTypeContainerRight: {
     flex: 1,
     alignItems: 'center',
     marginLeft: 9,
   },
-  customerNameContainer: {
-    backgroundColor: colors.light,
+  customerNameDropdownContainer: {
     flex: 1,
-    alignItems: 'flex-end',
-    height: 28,
-    marginLeft: 15,
-    paddingHorizontal: 9,
-    paddingVertical: 6,
-    borderRadius: 5,
   },
-  customerNameText: {
+  customerNameDropdown: {
+    borderColor: 'white',
+    height: 28,
     width: '100%',
-    textAlign: 'right',
+    borderRadius: 5,
   },
 
   itemWrapper: {
