@@ -8,7 +8,6 @@ import {
   TextInput,
   ScrollView,
 } from 'react-native';
-import {SwipeablePanel} from 'rn-swipeable-panel';
 import {
   ArrowBack2,
   Calendar,
@@ -22,14 +21,17 @@ import {
   UserIcon,
   UserIcon2,
 } from '../../assets';
+import BottomSheet from 'reanimated-bottom-sheet';
 import {Gap} from '../../components';
-import DatePicker from 'react-native-date-picker';
+import DatePicker from 'react-native-modern-datepicker';
+// import DatePicker from 'react-native-date-picker';
 import moment from 'moment';
 import DropDownPicker from 'react-native-dropdown-picker';
 import Product from './Product';
 import Details from './Details';
+import DetailsFull from './DetailsFull';
 
-const Penjualan = () => {
+const Penjualan = ({navigation}) => {
   const [panelProps, setPanelProps] = useState({
     fullWidth: true,
     openSmall: true,
@@ -38,9 +40,10 @@ const Penjualan = () => {
     onPressCloseButton: () => closePanel(),
     // ...or any prop you want
   });
-  const [isPanelActive, setIsPanelActive] = useState(false);
+  const sheetRef = React.useRef(null);
   const [date, setDate] = useState(new Date());
-  const [open, setOpen] = useState(false);
+  const [openCalendar, setOpenCalendar] = useState(false);
+  const [detail, setDetail] = useState(false);
 
   const [openUserAccount, setOpenUserAccount] = useState(false);
   const [userAccount, setUserAccount] = useState(null);
@@ -72,12 +75,19 @@ const Penjualan = () => {
     {label: 'Banana', value: 'bananawefsdfsdfsdfsdfswer34234sdfwe'},
   ]);
 
-  const openPanel = () => {
-    setIsPanelActive(true);
+  const Header = () => {
+    return (
+      <View style={styles.header}>
+        <Gap height={5} width={40} backgroundColor="grey" borderRadius={20} />
+      </View>
+    );
   };
-
-  const closePanel = () => {
-    setIsPanelActive(false);
+  const detailContent = () => {
+    if (detail) {
+      return DetailsFull;
+    } else {
+      return Details;
+    }
   };
   return (
     <View style={{flex: 1}}>
@@ -87,13 +97,13 @@ const Penjualan = () => {
           <Gap height={11} />
 
           <View style={styles.topButtonContainer}>
-            <TouchableOpacity>
+            <TouchableOpacity onPress={() => navigation.navigate('Dashboard')}>
               <ArrowBack2 />
             </TouchableOpacity>
             <Text style={styles.dateText}>
-              {moment(date).format('D MMMM yyyy')}
+              {moment(new Date(date)).format('D MMMM yyyy')}
             </Text>
-            <TouchableOpacity onPress={() => setOpen(true)}>
+            <TouchableOpacity onPress={() => setOpenCalendar(!openCalendar)}>
               <Calendar />
             </TouchableOpacity>
           </View>
@@ -165,34 +175,70 @@ const Penjualan = () => {
         </View>
 
         <Gap height={250} />
-        <DatePicker
+
+        {/* <DatePicker
           modal
           mode="date"
-          open={open}
+          open={openCalendar}
           date={date}
           onConfirm={date => {
-            setOpen(false);
+            setOpenCalendar(false);
             setDate(date);
           }}
           onCancel={() => {
-            setOpen(false);
+            setOpenCalendar(false);
           }}
-        />
+        /> */}
       </ImageBackground>
-      <SwipeablePanel
+      {openCalendar ? (
+        <View style={styles.datePickerContainer}>
+          <DatePicker
+            onSelectedChange={res => {
+              setDate(res);
+              console.log(res);
+              setTimeout(() => {
+                setOpenCalendar(false);
+              }, 100);
+            }}
+          />
+        </View>
+      ) : (
+        <></>
+      )}
+      <BottomSheet
+        ref={sheetRef}
+        snapPoints={[500, 300, 40]}
+        initialSnap={2}
+        renderContent={detailContent()}
+        renderHeader={Header}
+        borderRadius={0}
+        enabledInnerScrolling={false}
+        callbackThreshold={0.001}
+        onOpenEnd={() => {
+          setDetail(true);
+          console.log('end reached');
+        }}
+        onCloseStart={() => {
+          setDetail(false);
+          console.log('leaving end point');
+        }}
+      />
+      {/* <SwipeablePanel
         {...panelProps}
+        
+        // allowTouchOutside={true}
         isActive={isPanelActive}
         showCloseButton={false}
         smallPanelHeight={370}
         noBackgroundOpacity>
         <Details />
-      </SwipeablePanel>
-      <TouchableOpacity
+      </SwipeablePanel> */}
+      {/* <TouchableOpacity
         style={styles.panelOpenContainer}
-        onPress={() => setIsPanelActive(true)}>
+        onPress={() => sheetRef.current.snapTo(20)}>
         <Gap height={10} />
         <Gap width={40} height={4} backgroundColor={colors.darkGrey} />
-      </TouchableOpacity>
+      </TouchableOpacity> */}
     </View>
   );
 };
@@ -314,6 +360,30 @@ const styles = StyleSheet.create({
   addProductText: {
     color: colors.white,
   },
+  saveButtonContainer: {
+    backgroundColor: 'red',
+    width: '100%',
+    position: 'absolute',
+    bottom: 20,
+    alignItems: 'center',
+    zIndex: 50000,
+  },
+  saveButton: {
+    backgroundColor: colors.primaryGold,
+    width: 160,
+    borderRadius: 20,
+    paddingVertical: 6,
+    justifyContent: 'center',
+    alignItems: 'center',
+    // position: 'absolute',
+    // bottom: 100,
+    elevation: 5,
+  },
+  saveLabel: {
+    color: colors.white,
+    fontFamily: fonts.poppins,
+    fontSize: 14,
+  },
   panelOpenContainer: {
     width: '100%',
     height: 30,
@@ -323,5 +393,20 @@ const styles = StyleSheet.create({
     position: 'absolute',
     bottom: 0,
     alignItems: 'center',
+  },
+
+  datePickerContainer: {
+    position: 'absolute',
+    top: '15%',
+    width: '100%',
+  },
+
+  header: {
+    width: '100%',
+    backgroundColor: colors.white,
+    alignItems: 'center',
+    paddingVertical: 20,
+    borderTopLeftRadius: 20,
+    borderTopRightRadius: 20,
   },
 });

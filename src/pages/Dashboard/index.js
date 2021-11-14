@@ -6,8 +6,20 @@ import {useEffect} from 'react';
 import {clearData, getData} from '../../storage';
 import firestore from '@react-native-firebase/firestore';
 import {useNavigation} from '@react-navigation/native';
+import Details from '../Penjualan/Details';
+import {SwipeablePanel} from '../../components';
 
 const Dashboard = () => {
+  const [panelProps, setPanelProps] = useState({
+    fullWidth: true,
+    openSmall: true,
+    showCloseButton: true,
+    onClose: () => closePanel(),
+    onPressCloseButton: () => closePanel(),
+    // ...or any prop you want
+  });
+  const [isPanelActive, setIsPanelActive] = useState(false);
+
   const navigation = useNavigation();
   const [user, setUser] = useState();
   useEffect(() => {
@@ -31,7 +43,7 @@ const Dashboard = () => {
       });
   };
   return (
-    <View>
+    <View style={{flex: 1}}>
       <Text>Dashboard</Text>
       {user ? (
         <Text>
@@ -64,6 +76,22 @@ const Dashboard = () => {
         }}>
         <Text>Penjualan</Text>
       </TouchableHighlight>
+      <TouchableHighlight
+        onPress={() => {
+          setIsPanelActive(true);
+        }}>
+        <Text>Swipe panel</Text>
+      </TouchableHighlight>
+      <SwipeablePanel
+        {...panelProps}
+        allowTouchOutside={true}
+        isActive={isPanelActive}
+        onClose={() => setIsPanelActive(false)}
+        showCloseButton={false}
+        smallPanelHeight={370}
+        noBackgroundOpacity>
+        <Details />
+      </SwipeablePanel>
     </View>
   );
 };

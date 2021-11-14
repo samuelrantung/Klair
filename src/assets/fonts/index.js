@@ -4,7 +4,8 @@ export const fonts = {
   robotoLight: 'Roboto-Light',
   robotoMedium: 'Roboto-Medium',
   robotoRegular: 'Roboto-Regular',
-  poppins: 'Poppins',
+  poppins: 'Poppins-Regular',
   poppinsBold: 'Poppins-Bold',
   poppinsMedium: 'Poppins-Medium',
+  poppinsLight: 'Poppins-Light',
 };

@@ -4,9 +4,9 @@ import {TextInput, TouchableOpacity} from 'react-native-gesture-handler';
 import {colors, fonts} from '../../assets';
 import {Gap} from '../../components';
 
-const Details = () => {
+const DetailsFull = () => {
   var color = '';
-  var fontFamily = '';
+  var fontFamily = fonts.poppins;
   return (
     <View style={styles.detailsContainer}>
       {/* <Gap height={20} />
@@ -21,7 +21,7 @@ const Details = () => {
         </Text>
       </View>
       <View style={styles.rowLineContainer}>
-        <Text style={styles.detailsLabel((color = colors.darkGrey))} t>
+        <Text style={styles.detailsLabel((color = colors.darkGrey))}>
           Biaya Tambahan
         </Text>
         <Text style={styles.detailsLabel((color = colors.darkGrey))}>
@@ -63,14 +63,48 @@ const Details = () => {
         <Text style={styles.paymentStatusText}>Lunas</Text>
       </View>
       <Gap height={8} />
+      <View style={styles.dompetContainer}>
+        <Text
+          style={styles.detailsLabel(
+            (color = colors.black),
+            (fontFamily = fonts.poppinsLight),
+          )}>
+          Dompet
+        </Text>
+        <View>
+          <Text>Dana</Text>
+        </View>
+      </View>
+      <Gap height={8} />
+      <View style={styles.noteContainer}>
+        <Text
+          style={styles.detailsLabel(
+            (color = colors.black),
+            (fontFamily = fonts.poppinsLight),
+          )}>
+          Catatan
+        </Text>
+        <View style={styles.detailTextInputContainer}>
+          <TextInput
+            style={styles.detailTextInput}
+            multiline
+            placeholder="Tulis disini..."
+          />
+        </View>
+      </View>
+      <Gap height={8} />
       <TouchableOpacity style={styles.saveButton}>
         <Text style={styles.saveLabel}>SIMPAN</Text>
+      </TouchableOpacity>
+      <Gap height={8} />
+      <TouchableOpacity style={styles.printButton}>
+        <Text style={styles.saveLabel}>CETAK STRUK</Text>
       </TouchableOpacity>
     </View>
   );
 };
 
-export default Details;
+export default DetailsFull;
 
 const styles = StyleSheet.create({
   detailsContainer: {
@@ -107,6 +141,25 @@ const styles = StyleSheet.create({
   paymentStatusText: {
     color: 'white',
   },
+  dompetContainer: {
+    flexDirection: 'row',
+    width: '100%',
+    justifyContent: 'space-between',
+  },
+  noteContainer: {
+    width: '100%',
+  },
+  detailTextInputContainer: {
+    width: '100%',
+    height: 85,
+    borderRadius: 5,
+    borderColor: colors.lightBlue,
+    borderWidth: 1,
+  },
+  detailTextInput: {
+    width: '100%',
+    // height: '100%',
+  },
   saveButtonContainer: {
     backgroundColor: 'red',
     width: '100%',
@@ -126,5 +179,13 @@ const styles = StyleSheet.create({
     color: colors.white,
     fontFamily: fonts.poppins,
     fontSize: 14,
+  },
+  printButton: {
+    backgroundColor: colors.secondaryGold,
+    width: 160,
+    borderRadius: 20,
+    paddingVertical: 6,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 });
