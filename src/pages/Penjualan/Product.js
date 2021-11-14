@@ -4,7 +4,7 @@ import {TextInput, TouchableOpacity} from 'react-native-gesture-handler';
 import {colors, EditIcon, MinusIcon, PlusIcon, TrashIcon} from '../../assets';
 import {Gap} from '../../components';
 
-const Product = () => {
+const Product = ({onPress}) => {
   return (
     <View style={{width: '100%'}}>
       <View style={styles.productCardContainer}>
@@ -22,7 +22,7 @@ const Product = () => {
         </View>
 
         <View style={styles.quantityContainer}>
-          <TouchableOpacity>
+          <TouchableOpacity onPress={onPress}>
             <EditIcon />
           </TouchableOpacity>
           <View style={styles.plusMinusContainer}>

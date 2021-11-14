@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useCallback, useState} from 'react';
 import {
   View,
   Text,
@@ -30,6 +30,7 @@ import DropDownPicker from 'react-native-dropdown-picker';
 import Product from './Product';
 import Details from './Details';
 import DetailsFull from './DetailsFull';
+import EditProduct from './EditProduct';
 
 const Penjualan = ({navigation}) => {
   const [panelProps, setPanelProps] = useState({
@@ -40,7 +41,8 @@ const Penjualan = ({navigation}) => {
     onPressCloseButton: () => closePanel(),
     // ...or any prop you want
   });
-  const sheetRef = React.useRef(null);
+  const sheetRefDetail = React.useRef(null);
+  const sheetRefEdit = React.useRef(null);
   const [date, setDate] = useState(new Date());
   const [openCalendar, setOpenCalendar] = useState(false);
   const [detail, setDetail] = useState(false);
@@ -82,6 +84,13 @@ const Penjualan = ({navigation}) => {
       </View>
     );
   };
+  const EditHeader = () => {
+    return (
+      <View style={styles.header}>
+        <Gap height={5} width={40} backgroundColor="grey" borderRadius={20} />
+      </View>
+    );
+  };
   const detailContent = () => {
     if (detail) {
       return DetailsFull;
@@ -89,6 +98,16 @@ const Penjualan = ({navigation}) => {
       return Details;
     }
   };
+  const RenderEditProduct = () => {
+    <EditProduct />;
+  };
+  const OpenEditProduct = useCallback(() => {
+    sheetRefEdit.current.snapTo(0);
+  }, []);
+  // const OpenEditProduct = () => {
+  //   sheetRefEdit.current.snapTo(0);
+  //   <Text>wkwkwk</Text>;
+  // };
   return (
     <View style={{flex: 1}}>
       <ImageBackground style={styles.background} source={PenjualanBg}>
@@ -166,7 +185,11 @@ const Penjualan = ({navigation}) => {
                 Detail <Text style={styles.produkText}>Produk</Text>
               </Text>
             </View>
-            <Product />
+            <Product
+              onPress={res => {
+                OpenEditProduct();
+              }}
+            />
             <Product />
             <TouchableOpacity style={styles.addProductButton}>
               <Text style={styles.addProductText}>+ Tambahkan Produk</Text>
@@ -206,7 +229,7 @@ const Penjualan = ({navigation}) => {
         <></>
       )}
       <BottomSheet
-        ref={sheetRef}
+        ref={sheetRefDetail}
         snapPoints={[500, 300, 40]}
         initialSnap={2}
         renderContent={detailContent()}
@@ -222,6 +245,16 @@ const Penjualan = ({navigation}) => {
           setDetail(false);
           console.log('leaving end point');
         }}
+      />
+      <BottomSheet
+        ref={sheetRefEdit}
+        snapPoints={[500, 400, 0]}
+        initialSnap={2}
+        renderContent={RenderEditProduct()}
+        renderHeader={EditHeader}
+        borderRadius={0}
+        enabledInnerScrolling={false}
+        callbackThreshold={0.001}
       />
       {/* <SwipeablePanel
         {...panelProps}
