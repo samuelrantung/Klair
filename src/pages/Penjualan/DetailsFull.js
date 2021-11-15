@@ -56,6 +56,7 @@ const DetailsFull = () => {
       </View>
       <View style={styles.payAmountContainer}>
         <TextInput
+          clearTextOnFocus
           placeholderTextColor="white"
           placeholder="Masukkan total bayar"
           style={styles.payAmountInput}

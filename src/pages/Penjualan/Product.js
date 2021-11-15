@@ -23,7 +23,7 @@ const Product = ({onPress}) => {
 
         <View style={styles.quantityContainer}>
           <TouchableOpacity onPress={onPress}>
-            <EditIcon />
+            <EditIcon style={styles.editIcon} />
           </TouchableOpacity>
           <View style={styles.plusMinusContainer}>
             <TouchableOpacity
@@ -94,5 +94,9 @@ const styles = StyleSheet.create({
     height: 30,
     width: 30,
     paddingBottom: 5,
+  },
+
+  editIcon: {
+    color: colors.white,
   },
 });

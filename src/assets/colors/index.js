@@ -4,6 +4,8 @@ const listColors = {
   tertiary: '#AEE6E6',
   light: '#FBF6F0',
   darkGrey: '#999999',
+  lightGrey: '#CDCDCD',
+  davysGrey: '#5D5959',
 };
 
 export const colors = {
@@ -14,4 +16,6 @@ export const colors = {
   lightBlue: listColors.tertiary,
   light: listColors.light,
   darkGrey: listColors.darkGrey,
+  lightGrey: listColors.lightGrey,
+  davysGrey: listColors.davysGrey,
 };

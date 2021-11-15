@@ -30,7 +30,7 @@ import DropDownPicker from 'react-native-dropdown-picker';
 import Product from './Product';
 import Details from './Details';
 import DetailsFull from './DetailsFull';
-import EditProduct from './EditProduct';
+import EditProduct, {EditHeader} from './EditProduct';
 
 const Penjualan = ({navigation}) => {
   const [panelProps, setPanelProps] = useState({
@@ -84,13 +84,7 @@ const Penjualan = ({navigation}) => {
       </View>
     );
   };
-  const EditHeader = () => {
-    return (
-      <View style={styles.header}>
-        <Gap height={5} width={40} backgroundColor="grey" borderRadius={20} />
-      </View>
-    );
-  };
+
   const detailContent = () => {
     if (detail) {
       return DetailsFull;
@@ -99,7 +93,7 @@ const Penjualan = ({navigation}) => {
     }
   };
   const RenderEditProduct = () => {
-    <EditProduct />;
+    return EditProduct;
   };
   const OpenEditProduct = useCallback(() => {
     sheetRefEdit.current.snapTo(0);
@@ -229,6 +223,16 @@ const Penjualan = ({navigation}) => {
         <></>
       )}
       <BottomSheet
+        ref={sheetRefEdit}
+        snapPoints={[500, 1, 0]}
+        initialSnap={2}
+        renderContent={RenderEditProduct()}
+        renderHeader={EditHeader}
+        borderRadius={0}
+        enabledInnerScrolling={false}
+        callbackThreshold={0.001}
+      />
+      <BottomSheet
         ref={sheetRefDetail}
         snapPoints={[500, 300, 40]}
         initialSnap={2}
@@ -246,16 +250,7 @@ const Penjualan = ({navigation}) => {
           console.log('leaving end point');
         }}
       />
-      <BottomSheet
-        ref={sheetRefEdit}
-        snapPoints={[500, 400, 0]}
-        initialSnap={2}
-        renderContent={RenderEditProduct()}
-        renderHeader={EditHeader}
-        borderRadius={0}
-        enabledInnerScrolling={false}
-        callbackThreshold={0.001}
-      />
+
       {/* <SwipeablePanel
         {...panelProps}
         
