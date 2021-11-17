@@ -3,27 +3,15 @@ import {View, Text, StyleSheet} from 'react-native';
 import {TextInput, TouchableOpacity} from 'react-native-gesture-handler';
 import {colors, EditIcon, fonts} from '../../assets';
 import {Gap} from '../../components';
-import LinearGradient from 'react-native-linear-gradient';
 
 const EditHeader = () => {
   return (
     <View style={styles.header}>
-      {/* <Gap height={5} width={40} backgroundColor="grey" borderRadius={20} /> */}
-      {/* <LinearGradient
-        // start={{x: 0.0, y: 0.25}}
-        // end={{x: 0.5, y: 1.0}}
-        useAngle={true}
-        angle={120}
-        angleCenter={{x: 0.25, y: 0.25}}
-        locations={[0, 1]}
-        colors={['#FFA45B', '#ffffff']}
-        style={styles.headerTextContainerBorder}> */}
       <View style={styles.headerTextContainerBorder}>
         <Text style={styles.titleText}>
           Edit <Text style={styles.titleSubText}> Detail Produk</Text>
         </Text>
       </View>
-      {/* </LinearGradient> */}
     </View>
   );
 };
@@ -140,17 +128,14 @@ const styles = StyleSheet.create({
   header: {
     width: '100%',
     backgroundColor: colors.white,
-    // alignItems: 'center',
-    // paddingVertical: 20,
     borderTopLeftRadius: 20,
     borderTopRightRadius: 20,
   },
   headerTextContainerBorder: {
     backgroundColor: colors.primaryGold,
     width: '45%',
-    height: 50,
-    // flex: 1,
-    borderRadius: 20,
+    height: 40,
+    borderRadius: 40,
     justifyContent: 'center',
     alignItems: 'center',
     left: 25,
@@ -162,13 +147,8 @@ const styles = StyleSheet.create({
     height: 38,
     backgroundColor: colors.primaryGold,
     borderRadius: 20,
-    // borderWidth: 2,
-    // borderColor: colors.white,
     justifyContent: 'center',
     alignItems: 'center',
-    // position: 'absolute',
-    // left: 20,
-    // top: -20,
   },
   titleText: {
     fontSize: 16,
@@ -187,22 +167,18 @@ const styles = StyleSheet.create({
     paddingHorizontal: 30,
   },
   productDetailsContainer: {
-    // backgroundColor: 'yellow',
     flex: 1,
   },
   productTitleContainer: {
     flexDirection: 'row',
-    // backgroundColor: 'yellow',
     width: '100%',
     alignItems: 'flex-end',
   },
   productTitle: {
     fontSize: 20,
     fontFamily: fonts.poppinsBold,
-    // width: '45%',
     maxWidth: '85%',
     minWidth: '45%',
-    // height: 50,
     paddingVertical: 0,
   },
   productDescriptionContainer: {
@@ -295,12 +271,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
-  // saveButtonBoldTitle: {
-  //   fontSize: 12,
-  //   fontFamily: fonts.poppinsBold,
-  //   color: colors.white,
-  //   textAlign: 'center',
-  // },
   saveButtonTitle: fontFamily => ({
     fontSize: 12,
     fontFamily: fontFamily,

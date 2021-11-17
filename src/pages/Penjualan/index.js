@@ -185,7 +185,9 @@ const Penjualan = ({navigation}) => {
               }}
             />
             <Product />
-            <TouchableOpacity style={styles.addProductButton}>
+            <TouchableOpacity
+              style={styles.addProductButton}
+              onPress={() => navigation.navigate('SelectProduct')}>
               <Text style={styles.addProductText}>+ Tambahkan Produk</Text>
             </TouchableOpacity>
           </View>

@@ -6,7 +6,7 @@ import {Gap} from '../../components';
 
 const Product = ({onPress}) => {
   return (
-    <View style={{width: '100%'}}>
+    <View style={styles.container}>
       <View style={styles.productCardContainer}>
         <TouchableOpacity>
           <TrashIcon />
@@ -53,6 +53,9 @@ const Product = ({onPress}) => {
 export default Product;
 
 const styles = StyleSheet.create({
+  container: {
+    width: '100%',
+  },
   productCardContainer: {
     backgroundColor: colors.secondaryGold,
     height: 64,

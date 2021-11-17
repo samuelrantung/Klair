@@ -1,8 +1,14 @@
 import {createStackNavigator} from '@react-navigation/stack';
 import React from 'react';
 import {StyleSheet, Text, View} from 'react-native';
-import {Signin, Dashboard, Signup, Onboarding} from '../pages';
-import Penjualan from '../pages/Penjualan';
+import {
+  Signin,
+  Dashboard,
+  Signup,
+  Onboarding,
+  Penjualan,
+  SelectProduct,
+} from '../pages';
 
 const Stack = createStackNavigator();
 
@@ -32,6 +38,11 @@ const Router = () => {
       <Stack.Screen
         name="Penjualan"
         component={Penjualan}
+        options={{headerShown: false}}
+      />
+      <Stack.Screen
+        name="SelectProduct"
+        component={SelectProduct}
         options={{headerShown: false}}
       />
     </Stack.Navigator>

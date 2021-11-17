@@ -10,8 +10,12 @@ import TrashIcon from './trash-icon.svg';
 import EditIcon from './edit-icon.svg';
 import MinusIcon from './minus-icon.svg';
 import PlusIcon from './plus-icon.svg';
+import SearchIcon from './search-icon.svg';
+import ArrowRight from './arrow-right.svg';
 
 export {
+  ArrowRight,
+  SearchIcon,
   MinusIcon,
   PlusIcon,
   EditIcon,
