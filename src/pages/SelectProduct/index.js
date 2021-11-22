@@ -18,11 +18,15 @@ import {
   PlusIcon,
   SearchIcon,
 } from '../../assets';
-import {Gap} from '../../components';
+import {Gap, Header} from '../../components';
+import BottomSheet from 'reanimated-bottom-sheet';
+import Barang from './Barang';
+import {heightPercentageToDP as hp} from 'react-native-responsive-screen';
 
 const Product = () => {
-  let fontFamily;
+  const [count, setCount] = useState(0);
   const [toggleCheckBox, setToggleCheckBox] = useState(false);
+  let fontFamily;
   let backgroundColor;
   return (
     <View
@@ -31,13 +35,17 @@ const Product = () => {
           ? colors.secondaryGold
           : colors.white),
       )}>
-      <View style={styles.checkBoxContainer}>
+      <TouchableOpacity
+        style={styles.checkBoxContainer}
+        onPress={() => {
+          setToggleCheckBox(!toggleCheckBox);
+        }}>
         <CheckBox
           disabled={false}
           value={toggleCheckBox}
           onValueChange={newValue => setToggleCheckBox(newValue)}
         />
-      </View>
+      </TouchableOpacity>
       <Gap width={10} />
       <View style={styles.productInformationContainer}>
         <Text style={styles.productText()} numberOfLines={2}>
@@ -63,7 +71,11 @@ const Product = () => {
               <TouchableOpacity
                 style={styles.minusIcon}
                 onPress={() => {
-                  console.log('wkwkwk');
+                  if (toggleCheckBox) {
+                    if (count > 0) {
+                      setCount(count - 1);
+                    }
+                  }
                 }}>
                 <MinusIcon
                   preserveAspectRatio="xMinYMin slice"
@@ -74,11 +86,18 @@ const Product = () => {
               <View style={styles.quantityInputContainer}>
                 <TextInput
                   style={styles.quantityInput}
-                  placeholder="0"
+                  // placeholder={count}
+                  value={count.toString()}
+                  editable={toggleCheckBox}
                   textAlign="center"
                 />
               </View>
-              <TouchableOpacity>
+              <TouchableOpacity
+                onPress={() => {
+                  if (toggleCheckBox) {
+                    setCount(count + 1);
+                  }
+                }}>
                 <PlusIcon
                   preserveAspectRatio="xMinYMin slice"
                   height={25}
@@ -94,8 +113,10 @@ const Product = () => {
 };
 
 const SelectProduct = ({navigation}) => {
+  const sheetRef = React.useRef(null);
+
   return (
-    <View style={{flex: 1, height: '100%'}}>
+    <View style={{minHeight: hp('100%')}}>
       <ScrollView>
         <ImageBackground source={PenjualanBg} style={styles.page}>
           <View style={styles.titleRow}>
@@ -105,7 +126,14 @@ const SelectProduct = ({navigation}) => {
               <ArrowBack2 />
             </TouchableOpacity>
             <Text style={styles.titleText}>PILIH PRODUK</Text>
-            <View style={styles.arrowBackButton} />
+            <TouchableOpacity
+              style={styles.arrowBackButton}
+              onPress={() => {
+                console.log('open something');
+                sheetRef.current.snapTo(0);
+              }}>
+              <ArrowBack2 />
+            </TouchableOpacity>
           </View>
           <Gap height={20} />
           <View style={styles.searchContainer}>
@@ -131,6 +159,7 @@ const SelectProduct = ({navigation}) => {
           <ArrowRight />
         </TouchableOpacity>
       </View>
+      <Barang sheetRef={sheetRef} />
     </View>
   );
 };

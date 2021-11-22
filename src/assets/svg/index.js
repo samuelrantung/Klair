@@ -12,8 +12,14 @@ import MinusIcon from './minus-icon.svg';
 import PlusIcon from './plus-icon.svg';
 import SearchIcon from './search-icon.svg';
 import ArrowRight from './arrow-right.svg';
+import RedStar from './red-star.svg';
+import YellowStar from './yellow-star.svg';
+import BlueStar from './blue-star.svg';
 
 export {
+  RedStar,
+  YellowStar,
+  BlueStar,
   ArrowRight,
   SearchIcon,
   MinusIcon,

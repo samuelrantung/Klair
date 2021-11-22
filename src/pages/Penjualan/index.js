@@ -22,7 +22,7 @@ import {
   UserIcon2,
 } from '../../assets';
 import BottomSheet from 'reanimated-bottom-sheet';
-import {Gap} from '../../components';
+import {Gap, Header} from '../../components';
 import DatePicker from 'react-native-modern-datepicker';
 // import DatePicker from 'react-native-date-picker';
 import moment from 'moment';
@@ -76,14 +76,6 @@ const Penjualan = ({navigation}) => {
     {label: 'Banana', value: 'bananawefsdfsdfsdfsdfswer34234'},
     {label: 'Banana', value: 'bananawefsdfsdfsdfsdfswer34234sdfwe'},
   ]);
-
-  const Header = () => {
-    return (
-      <View style={styles.header}>
-        <Gap height={5} width={40} backgroundColor="grey" borderRadius={20} />
-      </View>
-    );
-  };
 
   const detailContent = () => {
     if (detail) {
@@ -431,12 +423,12 @@ const styles = StyleSheet.create({
     width: '100%',
   },
 
-  header: {
-    width: '100%',
-    backgroundColor: colors.white,
-    alignItems: 'center',
-    paddingVertical: 20,
-    borderTopLeftRadius: 20,
-    borderTopRightRadius: 20,
-  },
+  // header: {
+  //   width: '100%',
+  //   backgroundColor: colors.white,
+  //   alignItems: 'center',
+  //   paddingVertical: 20,
+  //   borderTopLeftRadius: 20,
+  //   borderTopRightRadius: 20,
+  // },
 });

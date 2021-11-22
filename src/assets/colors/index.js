@@ -6,6 +6,7 @@ const listColors = {
   darkGrey: '#999999',
   lightGrey: '#CDCDCD',
   davysGrey: '#5D5959',
+  darkNavy: '#2C2C63',
 };
 
 export const colors = {
@@ -18,4 +19,5 @@ export const colors = {
   darkGrey: listColors.darkGrey,
   lightGrey: listColors.lightGrey,
   davysGrey: listColors.davysGrey,
+  darkNavy: listColors.darkNavy,
 };
