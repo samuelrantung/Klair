@@ -1,10 +1,22 @@
 import React, {useState} from 'react';
-import {View, Text, StyleSheet} from 'react-native';
+import {View, Text, StyleSheet, TouchableOpacity} from 'react-native';
 import DropDownPicker from 'react-native-dropdown-picker';
 import {TextInput} from 'react-native-gesture-handler';
-import {BlueStar, colors, fonts, RedStar, YellowStar} from '../../assets';
+import {
+  BlueStar,
+  colors,
+  fonts,
+  MinusIcon,
+  PlusIcon,
+  RedStar,
+  YellowStar,
+} from '../../assets';
 import {Gap, Header} from '../../components';
 import BottomSheet from 'reanimated-bottom-sheet';
+import RadioForm, {
+  RadioButton,
+  RadioButtonInput,
+} from 'react-native-simple-radio-button';
 
 const Barang = ({sheetRef}) => {
   const [openJenisProduk, setOpenJenisProduk] = useState(false);
@@ -13,6 +25,13 @@ const Barang = ({sheetRef}) => {
     {label: 'Barang', value: 'Barang'},
     {label: 'Jasa', value: 'Jasa'},
   ]);
+  var radio_props = [
+    {label: 'Barang', value: 'Barang'},
+    {label: 'Jasa', value: 'Jasa'},
+  ];
+  const [value, setValue] = useState('');
+  let valueIndex;
+  const [stock, setStock] = useState(1);
   return (
     <BottomSheet
       ref={sheetRef}
@@ -36,7 +55,9 @@ const Barang = ({sheetRef}) => {
                 blurOnSubmit={true}
               />
             </View>
+
             <Gap height={20} />
+
             <View style={styles.dataInputContainer}>
               <View style={styles.productNameContainer}>
                 <RedStar />
@@ -55,36 +76,81 @@ const Barang = ({sheetRef}) => {
                 blurOnSubmit={true}
               />
             </View>
+
+            <Gap height={20} />
+
             <View style={styles.dataInputContainer}>
               <View style={styles.productNameContainer}>
                 <BlueStar />
                 <Gap width={12} />
                 <Text style={styles.title}>Jenis Produk</Text>
-                <View style={styles.subTitleDropdownContainer}>
-                  <DropDownPicker
-                    open={openJenisProduk}
-                    value={jenisProduk}
-                    items={pilihanJenisProduk}
-                    setOpen={setOpenJenisProduk}
-                    setValue={setJenisProduk}
-                    setItems={setPilihanJenisProduk}
-                    style={styles.jenisProdukDropdown}
-                    placeholder={`${jenisProduk}`}
-                    dropDownContainerStyle={
-                      styles.jenisProdukDropdownContainerStyle
-                    }
-                  />
-                </View>
               </View>
-              {/* <TextInput
-                placeholder="Anda memilih jenis produk BARANG"
-                style={styles.dataInput}
-                numberOfLines={2}
-                multiline
-                maxLength={50}
-                blurOnSubmit={true}
-              /> */}
+              <Gap height={20} />
+              <RadioForm
+                radio_props={radio_props}
+                formHorizontal
+                animation
+                onPress={x => setValue(x)}
+                buttonSize={10}
+                labelStyle={styles.radioLabel}
+              />
             </View>
+
+            <Gap height={20} />
+
+            <View style={styles.priceTitleContainer}>
+              <Text style={styles.priceTitle}>Harga Jual</Text>
+              <Text style={styles.priceTitle}>Harga Beli</Text>
+            </View>
+
+            <Gap height={20} />
+
+            <View style={styles.priceAmountContainer}>
+              <Text style={styles.priceAmount}>Rp45.000</Text>
+              <Text style={styles.priceAmount}>Rp32.000</Text>
+            </View>
+
+            <Gap height={50} />
+
+            <View style={styles.stockContainer}>
+              <Text style={styles.stockTitle}>Stok Barang</Text>
+              <View style={styles.stockInputContainer}>
+                <TouchableOpacity
+                  onPress={() => {
+                    if (stock > 0) {
+                      setStock(stock - 1);
+                    }
+                  }}>
+                  <MinusIcon
+                    preserveAspectRatio="xMinYMin slice"
+                    height={20}
+                    width={20}
+                  />
+                </TouchableOpacity>
+                <TextInput
+                  value={stock.toString()}
+                  onChangeText={setStock}
+                  keyboardType="number-pad"
+                  style={styles.stockInput}
+                />
+                <TouchableOpacity
+                  onPress={() => {
+                    setStock(stock + 1);
+                  }}>
+                  <PlusIcon
+                    preserveAspectRatio="xMinYMin slice"
+                    height={20}
+                    width={20}
+                  />
+                </TouchableOpacity>
+              </View>
+            </View>
+
+            <Gap height={10} />
+
+            <TouchableOpacity style={styles.saveButton}>
+              <Text style={styles.saveButtonLabel}>Simpan Produk</Text>
+            </TouchableOpacity>
           </View>
         );
       }}
@@ -123,22 +189,19 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: colors.darkNavy,
   },
+  radioLabel: {
+    fontSize: 16,
+    color: colors.darkNavy,
+    fontFamily: fonts.poppins,
+    marginRight: 20,
+  },
   subTitleContainer: {
     flex: 1,
-    // alignItems: 'flex-end',
-    flexDirection: 'row-reverse',
-    backgroundColor: 'yellow',
-  },
-  subTitleDropdownContainer: {
-    backgroundColor: 'blue',
-    flex: 1,
-    alignItems: 'flex-end',
     flexDirection: 'row-reverse',
   },
   jenisProdukDropdown: {
     backgroundColor: 'white',
     borderWidth: 0,
-    // padding: 0,
     width: 100,
   },
   jenisProdukDropdownContainerStyle: {
@@ -148,5 +211,65 @@ const styles = StyleSheet.create({
   dataInput: {
     width: '100%',
     fontFamily: fonts.poppins,
+  },
+
+  priceTitleContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    borderBottomColor: colors.lightGrey,
+    borderBottomWidth: 1,
+    paddingBottom: 10,
+  },
+  priceTitle: {
+    color: colors.darkNavy,
+    fontSize: 14,
+    fontFamily: fonts.poppinsMedium,
+  },
+  priceAmountContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
+  priceAmount: {
+    color: colors.darkNavy,
+    fontFamily: fonts.poppinsBold,
+    fontSize: 13,
+  },
+
+  stockContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
+  stockTitle: {
+    color: colors.darkNavy,
+    fontSize: 14,
+    fontFamily: fonts.poppinsMedium,
+  },
+  stockInputContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  stockInput: {
+    padding: 0,
+    width: 40,
+    textAlign: 'center',
+    fontSize: 16,
+    color: colors.darkNavy,
+  },
+
+  saveButton: {
+    width: '100%',
+    backgroundColor: colors.secondaryGold,
+    height: 40,
+    borderRadius: 6,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-around',
+    elevation: 5,
+  },
+  saveButtonLabel: {
+    color: colors.white,
+    fontSize: 14,
+    fontFamily: fonts.poppinsBold,
+    textAlign: 'center',
   },
 });
