@@ -23,6 +23,7 @@
     "react": "17.0.1",
     "react-native": "0.64.2",
     "react-native-confirmation-code-input": "^1.0.4",
+    "react-native-currency-input": "^1.0.1",
     "react-native-date-picker": "^4.1.1",
     "react-native-dropdown-picker": "^5.2.3",
     "react-native-fbsdk-next": "^4.3.0",

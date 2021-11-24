@@ -15,8 +15,10 @@ import ArrowRight from './arrow-right.svg';
 import RedStar from './red-star.svg';
 import YellowStar from './yellow-star.svg';
 import BlueStar from './blue-star.svg';
+import PlusIcon2 from './plus-2-icon.svg';
 
 export {
+  PlusIcon2,
   RedStar,
   YellowStar,
   BlueStar,

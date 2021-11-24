@@ -16,6 +16,7 @@ import {
   MinusIcon,
   PenjualanBg,
   PlusIcon,
+  PlusIcon2,
   SearchIcon,
 } from '../../assets';
 import {Gap, Header} from '../../components';
@@ -129,10 +130,9 @@ const SelectProduct = ({navigation}) => {
             <TouchableOpacity
               style={styles.arrowBackButton}
               onPress={() => {
-                console.log('open something');
                 sheetRef.current.snapTo(0);
               }}>
-              <ArrowBack2 />
+              <PlusIcon2 />
             </TouchableOpacity>
           </View>
           <Gap height={20} />

@@ -17,21 +17,17 @@ import RadioForm, {
   RadioButton,
   RadioButtonInput,
 } from 'react-native-simple-radio-button';
+import CurrencyInput from 'react-native-currency-input';
 
 const Barang = ({sheetRef}) => {
-  const [openJenisProduk, setOpenJenisProduk] = useState(false);
-  const [jenisProduk, setJenisProduk] = useState('');
-  const [pilihanJenisProduk, setPilihanJenisProduk] = useState([
-    {label: 'Barang', value: 'Barang'},
-    {label: 'Jasa', value: 'Jasa'},
-  ]);
   var radio_props = [
-    {label: 'Barang', value: 'Barang'},
-    {label: 'Jasa', value: 'Jasa'},
+    {label: 'Barang', value: false},
+    {label: 'Jasa', value: true},
   ];
-  const [value, setValue] = useState('');
-  let valueIndex;
+  const [radioValue, setRadioValue] = useState('');
   const [stock, setStock] = useState(1);
+  const [hargaJual, setHargaJual] = useState(0);
+  const [hargaBeli, setHargaBeli] = useState(0);
   return (
     <BottomSheet
       ref={sheetRef}
@@ -90,27 +86,75 @@ const Barang = ({sheetRef}) => {
                 radio_props={radio_props}
                 formHorizontal
                 animation
-                onPress={x => setValue(x)}
+                onPress={x => {
+                  setRadioValue(x);
+                  console.log('radio button : ', radioValue);
+                }}
                 buttonSize={10}
                 labelStyle={styles.radioLabel}
               />
             </View>
 
             <Gap height={20} />
+            {radioValue ? (
+              <View>
+                <View style={styles.priceTitleContainer}>
+                  <Text style={styles.priceTitle}>Harga Jual</Text>
+                </View>
 
-            <View style={styles.priceTitleContainer}>
-              <Text style={styles.priceTitle}>Harga Jual</Text>
-              <Text style={styles.priceTitle}>Harga Beli</Text>
-            </View>
+                <Gap height={20} />
 
-            <Gap height={20} />
+                <View style={styles.priceAmountContainer}>
+                  <CurrencyInput
+                    style={styles.priceAmount}
+                    clearTextOnFocus={true}
+                    prefix="Rp"
+                    separator="."
+                    value={hargaJual}
+                    precision={0}
+                    placeholder={'0'}
+                    onChangeValue={setHargaJual}
+                    selection={{start: 0, end: 0}}
+                  />
+                </View>
+              </View>
+            ) : (
+              <View>
+                <View style={styles.priceTitleContainer}>
+                  <Text style={styles.priceTitle}>Harga Jual</Text>
+                  <Text style={styles.priceTitle}>Harga Beli</Text>
+                </View>
 
-            <View style={styles.priceAmountContainer}>
-              <Text style={styles.priceAmount}>Rp45.000</Text>
-              <Text style={styles.priceAmount}>Rp32.000</Text>
-            </View>
+                <Gap height={20} />
 
-            <Gap height={50} />
+                <View style={styles.priceAmountContainer}>
+                  <CurrencyInput
+                    style={styles.priceAmount}
+                    clearTextOnFocus={true}
+                    prefix="Rp"
+                    separator="."
+                    value={hargaJual}
+                    precision={0}
+                    placeholder={'0'}
+                    onChangeValue={setHargaJual}
+                    selection={{start: 0, end: 0}}
+                  />
+                  <CurrencyInput
+                    style={styles.priceAmount}
+                    clearTextOnFocus={true}
+                    prefix="Rp"
+                    separator="."
+                    value={hargaBeli}
+                    precision={0}
+                    placeholder={'0'}
+                    onChangeValue={setHargaBeli}
+                    textAlign="right"
+                  />
+                </View>
+              </View>
+            )}
+
+            <Gap height={40} />
 
             <View style={styles.stockContainer}>
               <Text style={styles.stockTitle}>Stok Barang</Text>
@@ -229,10 +273,18 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
   },
+  priceAmountInputContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
   priceAmount: {
     color: colors.darkNavy,
     fontFamily: fonts.poppinsBold,
     fontSize: 13,
+    width: '45%',
+    backgroundColor: colors.light,
+    padding: 3,
+    borderRadius: 7,
   },
 
   stockContainer: {
