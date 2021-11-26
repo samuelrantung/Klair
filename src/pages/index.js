@@ -4,5 +4,14 @@ import Onboarding from './Onboarding';
 import Dashboard from './Dashboard';
 import Penjualan from './Penjualan';
 import SelectProduct from './SelectProduct';
+import SalesSummary from './SalesSummary';
 
-export {Signin, Signup, Onboarding, Dashboard, Penjualan, SelectProduct};
+export {
+  Signin,
+  Signup,
+  Onboarding,
+  Dashboard,
+  Penjualan,
+  SelectProduct,
+  SalesSummary,
+};

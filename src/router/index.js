@@ -8,13 +8,14 @@ import {
   Onboarding,
   Penjualan,
   SelectProduct,
+  SalesSummary,
 } from '../pages';
 
 const Stack = createStackNavigator();
 
 const Router = () => {
   return (
-    <Stack.Navigator initialRouteName="SelectProduct">
+    <Stack.Navigator initialRouteName="SalesSummary">
       <Stack.Screen
         name="Signin"
         component={Signin}
@@ -43,6 +44,11 @@ const Router = () => {
       <Stack.Screen
         name="SelectProduct"
         component={SelectProduct}
+        options={{headerShown: false}}
+      />
+      <Stack.Screen
+        name="SalesSummary"
+        component={SalesSummary}
         options={{headerShown: false}}
       />
     </Stack.Navigator>

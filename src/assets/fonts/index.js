@@ -8,4 +8,5 @@ export const fonts = {
   poppinsBold: 'Poppins-Bold',
   poppinsMedium: 'Poppins-Medium',
   poppinsLight: 'Poppins-Light',
+  poppinsSemiBold: 'Poppins-SemiBold',
 };

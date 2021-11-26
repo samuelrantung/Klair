@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {View, Text, TouchableHighlight} from 'react-native';
+import {View, Text, TouchableHighlight, TouchableOpacity} from 'react-native';
 import auth from '@react-native-firebase/auth';
 // import {firebase} from '@react-native-firebase/auth';
 import {useEffect} from 'react';
@@ -82,16 +82,18 @@ const Dashboard = () => {
         }}>
         <Text>Swipe panel</Text>
       </TouchableHighlight>
-      <SwipeablePanel
-        {...panelProps}
-        allowTouchOutside={true}
-        isActive={isPanelActive}
-        onClose={() => setIsPanelActive(false)}
-        showCloseButton={false}
-        smallPanelHeight={370}
-        noBackgroundOpacity>
-        <Details />
-      </SwipeablePanel>
+      <TouchableHighlight
+        onPress={() => {
+          navigation.navigate('SalesSummary');
+        }}>
+        <Text>SalesSummary</Text>
+      </TouchableHighlight>
+      <TouchableHighlight
+        onPress={() => {
+          navigation.navigate('Penjualan');
+        }}>
+        <Text>Penjualan</Text>
+      </TouchableHighlight>
     </View>
   );
 };

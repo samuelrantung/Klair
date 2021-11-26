@@ -94,8 +94,9 @@ const Penjualan = ({navigation}) => {
   //   sheetRefEdit.current.snapTo(0);
   //   <Text>wkwkwk</Text>;
   // };
+  const productCount = 4;
   return (
-    <View style={{flex: 1}}>
+    <View style={styles.page}>
       <ImageBackground style={styles.background} source={PenjualanBg}>
         <View style={styles.insideContainer}>
           <Text style={styles.title}>PENJUALAN</Text>
@@ -109,7 +110,7 @@ const Penjualan = ({navigation}) => {
               {moment(new Date(date)).format('D MMMM yyyy')}
             </Text>
             <TouchableOpacity onPress={() => setOpenCalendar(!openCalendar)}>
-              <Calendar />
+              <Calendar color="white" />
             </TouchableOpacity>
           </View>
           <Gap height={24} />
@@ -166,10 +167,17 @@ const Penjualan = ({navigation}) => {
 
           <Gap height={68} />
           <View style={styles.itemWrapper}>
-            <View style={styles.itemContainer}>
+            <View style={styles.itemContainer(productCount)}>
               <Text style={styles.detailText}>
                 Detail <Text style={styles.produkText}>Produk</Text>
               </Text>
+              {/* <View style={styles.addProductButtonContainer}> */}
+              <TouchableOpacity
+                style={styles.addProductButton}
+                onPress={() => navigation.navigate('SelectProduct')}>
+                <Text style={styles.addProductText}>+ Tambahkan Produk</Text>
+              </TouchableOpacity>
+              {/* </View> */}
             </View>
             <Product
               onPress={res => {
@@ -177,29 +185,12 @@ const Penjualan = ({navigation}) => {
               }}
             />
             <Product />
-            <TouchableOpacity
-              style={styles.addProductButton}
-              onPress={() => navigation.navigate('SelectProduct')}>
-              <Text style={styles.addProductText}>+ Tambahkan Produk</Text>
-            </TouchableOpacity>
+            <Product />
+            <Product />
           </View>
         </View>
 
         <Gap height={250} />
-
-        {/* <DatePicker
-          modal
-          mode="date"
-          open={openCalendar}
-          date={date}
-          onConfirm={date => {
-            setOpenCalendar(false);
-            setDate(date);
-          }}
-          onCancel={() => {
-            setOpenCalendar(false);
-          }}
-        /> */}
       </ImageBackground>
       {openCalendar ? (
         <View style={styles.datePickerContainer}>
@@ -244,23 +235,6 @@ const Penjualan = ({navigation}) => {
           console.log('leaving end point');
         }}
       />
-
-      {/* <SwipeablePanel
-        {...panelProps}
-        
-        // allowTouchOutside={true}
-        isActive={isPanelActive}
-        showCloseButton={false}
-        smallPanelHeight={370}
-        noBackgroundOpacity>
-        <Details />
-      </SwipeablePanel> */}
-      {/* <TouchableOpacity
-        style={styles.panelOpenContainer}
-        onPress={() => sheetRef.current.snapTo(20)}>
-        <Gap height={10} />
-        <Gap width={40} height={4} backgroundColor={colors.darkGrey} />
-      </TouchableOpacity> */}
     </View>
   );
 };
@@ -268,6 +242,9 @@ const Penjualan = ({navigation}) => {
 export default Penjualan;
 
 const styles = StyleSheet.create({
+  page: {
+    flex: 1,
+  },
   background: {
     flex: 1,
     // paddingHorizontal: 30,
@@ -353,17 +330,18 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     zIndex: 1,
   },
-  itemContainer: {
+  itemContainer: productCount => ({
     backgroundColor: 'white',
-    height: 250,
+    height: 90 + 80 * productCount,
     // marginHorizontal: 14,
     position: 'absolute',
     width: '90%',
     top: -48,
     borderRadius: 20,
     paddingHorizontal: 20,
-    paddingTop: 12,
-  },
+    paddingVertical: 12,
+    justifyContent: 'space-between',
+  }),
   detailText: {
     fontFamily: fonts.poppins,
     fontSize: 24,
@@ -373,11 +351,20 @@ const styles = StyleSheet.create({
     fontFamily: fonts.poppinsMedium,
   },
 
+  // addProductButtonContainer: {
+  //   width: '100%',
+  //   backgroundColor: 'yellow',
+  //   // position: 'absolute',
+  //   // bottom: 0,
+  // },
   addProductButton: {
     backgroundColor: colors.primaryGold,
     paddingHorizontal: 50,
     paddingVertical: 6,
     borderRadius: 20,
+    flexDirection: 'column-reverse',
+    // position: 'absolute',
+    // bottom: 0,
   },
   addProductText: {
     color: colors.white,
