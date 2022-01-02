@@ -17,8 +17,20 @@ import YellowStar from './yellow-star.svg';
 import BlueStar from './blue-star.svg';
 import PlusIcon2 from './plus-2-icon.svg';
 import SortIcon from './sort-icon.svg';
+import Dompet from './dompet.svg';
+import Transaksi from './transaction.svg';
+import Laporan from './laporan.svg';
+import HutangPiutang from './hutang-piutang.svg';
+import Akun from './akun.svg';
+import PlusButton from './plus-button.svg';
 
 export {
+  PlusButton,
+  Transaksi,
+  Laporan,
+  HutangPiutang,
+  Akun,
+  Dompet,
   SortIcon,
   PlusIcon2,
   RedStar,

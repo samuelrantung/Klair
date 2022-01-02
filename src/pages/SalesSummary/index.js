@@ -13,6 +13,29 @@ import {
 } from '../../assets';
 import {Gap} from '../../components';
 
+// const DATA =
+
+const TableRow = () => {
+  return (
+    <View style={styles.dataContainer}>
+      <View style={styles.rowContainer}>
+        <View style={styles.dataDateContainer}>
+          <Text style={styles.dataDate}>11/10/2021</Text>
+          <Text style={styles.dataTime}>Senin 18:10</Text>
+        </View>
+        <View style={styles.dataDetailsContainer}>
+          <Text style={styles.dataName}>Chandra Mangare</Text>
+          <Text style={styles.dataStatus}>Lunas</Text>
+        </View>
+        <View style={styles.dataTotalContainer}>
+          <Text style={styles.dataTotal}>Rp</Text>
+          <Text style={styles.dataTotal}>267.500</Text>
+        </View>
+      </View>
+    </View>
+  );
+};
+
 const SalesSummary = ({navigation}) => {
   const [openCalendar, setOpenCalendar] = useState(false);
   return (
@@ -97,22 +120,14 @@ const SalesSummary = ({navigation}) => {
           </View>
         </View>
 
-        <View style={styles.dataContainer}>
-          <View style={styles.rowContainer}>
-            <View style={styles.dataDateContainer}>
-              <Text style={styles.dataDate}>11/10/2021</Text>
-              <Text style={styles.dataTime}>Senin 18:10</Text>
-            </View>
-            <View style={styles.dataDetailsContainer}>
-              <Text style={styles.dataName}>Chandra Mangare</Text>
-              <Text style={styles.dataStatus}>Lunas</Text>
-            </View>
-            <View style={styles.dataTotalContainer}>
-              <Text style={styles.dataTotal}>Rp</Text>
-              <Text style={styles.dataTotal}>267.500</Text>
-            </View>
-          </View>
-        </View>
+        <Gap height={25} />
+
+        <TableRow />
+        <TableRow />
+        <TableRow />
+        <TableRow />
+        <TableRow />
+        <TableRow />
       </ImageBackground>
       {openCalendar ? (
         <View style={styles.datePickWrapper}>
@@ -305,7 +320,7 @@ const styles = StyleSheet.create({
   dataContainer: {
     // backgroundColor: 'yellow',
     width: '100%',
-    height: 200,
+    // height: 200,
     paddingHorizontal: 10,
   },
   rowContainer: {

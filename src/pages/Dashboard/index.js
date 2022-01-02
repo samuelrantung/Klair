@@ -94,6 +94,12 @@ const Dashboard = () => {
         }}>
         <Text>Penjualan</Text>
       </TouchableHighlight>
+      <TouchableHighlight
+        onPress={() => {
+          navigation.navigate('PersonalDashboard');
+        }}>
+        <Text>Personal financial</Text>
+      </TouchableHighlight>
     </View>
   );
 };

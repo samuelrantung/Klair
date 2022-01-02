@@ -9,13 +9,15 @@ import {
   Penjualan,
   SelectProduct,
   SalesSummary,
+  PersonalDashboard,
 } from '../pages';
+import PersonalBottomTab from './PersonalBottomTab';
 
 const Stack = createStackNavigator();
 
 const Router = () => {
   return (
-    <Stack.Navigator initialRouteName="SalesSummary">
+    <Stack.Navigator initialRouteName="PersonalBottomTab">
       <Stack.Screen
         name="Signin"
         component={Signin}
@@ -49,6 +51,16 @@ const Router = () => {
       <Stack.Screen
         name="SalesSummary"
         component={SalesSummary}
+        options={{headerShown: false}}
+      />
+      <Stack.Screen
+        name="PersonalDashboard"
+        component={PersonalDashboard}
+        options={{headerShown: false}}
+      />
+      <Stack.Screen
+        name="PersonalBottomTab"
+        component={PersonalBottomTab}
         options={{headerShown: false}}
       />
     </Stack.Navigator>

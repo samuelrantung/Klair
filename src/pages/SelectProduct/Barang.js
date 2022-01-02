@@ -137,7 +137,7 @@ const Barang = ({sheetRef}) => {
                     precision={0}
                     placeholder={'0'}
                     onChangeValue={setHargaJual}
-                    selection={{start: 0, end: 0}}
+                    // selection={{start: 0, end: 0}}
                   />
                   <CurrencyInput
                     style={styles.priceAmount}
